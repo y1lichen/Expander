@@ -13,6 +13,10 @@
 		D48A622026BFAC1400E4A419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48A621F26BFAC1400E4A419 /* Assets.xcassets */; };
 		D48A622326BFAC1400E4A419 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48A622226BFAC1400E4A419 /* Preview Assets.xcassets */; };
 		D48A622626BFAC1400E4A419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D48A622426BFAC1400E4A419 /* Main.storyboard */; };
+		D48A623126BFACD400E4A419 /* DeleteKeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623026BFACD400E4A419 /* DeleteKeyEvent.swift */; };
+		D48A623326BFAD0200E4A419 /* ExpanderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623226BFAD0200E4A419 /* ExpanderModel.swift */; };
+		D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623426BFAD2400E4A419 /* SnippetsModel.swift */; };
+		D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623626BFAD3C00E4A419 /* ToolBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +29,10 @@
 		D48A622526BFAC1400E4A419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D48A622726BFAC1400E4A419 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D48A622826BFAC1400E4A419 /* Expander.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Expander.entitlements; sourceTree = "<group>"; };
+		D48A623026BFACD400E4A419 /* DeleteKeyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteKeyEvent.swift; sourceTree = "<group>"; };
+		D48A623226BFAD0200E4A419 /* ExpanderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpanderModel.swift; sourceTree = "<group>"; };
+		D48A623426BFAD2400E4A419 /* SnippetsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsModel.swift; sourceTree = "<group>"; };
+		D48A623626BFAD3C00E4A419 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +65,8 @@
 		D48A621726BFAC1300E4A419 /* Expander */ = {
 			isa = PBXGroup;
 			children = (
+				D48A622F26BFACB100E4A419 /* Model */,
+				D48A622E26BFACA400E4A419 /* View */,
 				D48A621826BFAC1300E4A419 /* AppDelegate.swift */,
 				D48A621A26BFAC1300E4A419 /* ContentView.swift */,
 				D48A621F26BFAC1400E4A419 /* Assets.xcassets */,
@@ -75,6 +85,24 @@
 				D48A622226BFAC1400E4A419 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D48A622E26BFACA400E4A419 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D48A622F26BFACB100E4A419 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D48A623026BFACD400E4A419 /* DeleteKeyEvent.swift */,
+				D48A623226BFAD0200E4A419 /* ExpanderModel.swift */,
+				D48A623426BFAD2400E4A419 /* SnippetsModel.swift */,
+				D48A623626BFAD3C00E4A419 /* ToolBar.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,7 +175,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D48A623326BFAD0200E4A419 /* ExpanderModel.swift in Sources */,
+				D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */,
 				D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */,
+				D48A623126BFACD400E4A419 /* DeleteKeyEvent.swift in Sources */,
+				D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */,
 				D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */,
 				D48A621E26BFAC1300E4A419 /* Expander.xcdatamodeld in Sources */,
 			);

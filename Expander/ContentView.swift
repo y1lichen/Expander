@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var model = ExpanderModel()
     var body: some View {
-        Text("Hello, World!")
+        Text("\(model.text)")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

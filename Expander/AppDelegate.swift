@@ -12,11 +12,53 @@ import SwiftUI
 class AppDelegate: NSObject, NSApplicationDelegate {
 
 	var window: NSWindow!
+	// status bar
+	var statusbarItem: NSStatusItem!
+	var statusbarMenu: NSMenu!
+	//
+	// MARK: - create tool bar
+	//
+	//
+	/*
+	## get user permisission
+	- https://developer.apple.com/forums/thread/24288
+	*/
+	// MARK: - remove sandbox to show notification
+	//
+	func getuserPermission() {
+		AXIsProcessTrustedWithOptions(
+		[kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
+	}
+	
+	@objc func openPreferences() {
+		
+	}
+	
+	@objc func toggleExpander() {
+		
+	}
+	
+	func createStatusBar() {
+		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+		self.statusbarMenu = NSMenu()
+		self.statusbarItem.button?.title = "expander"
+		self.statusbarItem.menu = self.statusbarMenu
+		let toggle = NSMenuItem()
+		toggle.title = "toggle"
+		toggle.action = #selector(toggleExpander)
+		toggle.keyEquivalentModifierMask = [.command, .shift]
+		toggle.keyEquivalent = "e"
+		self.statusbarMenu.addItem(toggle)
+		self.statusbarMenu.addItem(withTitle: "Preferences", action: #selector(openPreferences), keyEquivalent: ",")
+		self.statusbarMenu.addItem(NSMenuItem.separator())
+		self.statusbarMenu.addItem(withTitle: "Quit Expander", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+	}
 
 
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
+		self.createStatusBar()
 		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext)
 
 		// Create the window and set the content view.
@@ -25,9 +67,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		    styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
 		    backing: .buffered, defer: false)
 		window.center()
-		window.setFrameAutosaveName("Main Window")
+		//
+		NSToolbar.prefToolBar.delegate = self
+		window.toolbar = .prefToolBar
+		//
+		window.setFrameAutosaveName("Preferences")
+
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
+		self.getuserPermission()
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {
