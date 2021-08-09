@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 extension NSToolbarItemGroup.Identifier {
 	static let general = NSToolbarItem.Identifier(rawValue: "general")
 	static let snippets = NSToolbarItem.Identifier(rawValue: "notification")
@@ -22,35 +21,39 @@ extension NSToolbar {
 }
 
 extension AppDelegate: NSToolbarDelegate {
-	
+
 	func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
 		[.general, .snippets]
 	}
-	
+
 	func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
 		[.general, .snippets]
 	}
-	
-	func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
+
+	func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
+				willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
 		switch itemIdentifier {
 		case NSToolbarItem.Identifier.general:
-			return customToolbarItem(itemIdentifier: itemIdentifier, label: "General", image: NSImage(named: NSImage.preferencesGeneralName)!, action: #selector(openGeneral))
+			return customToolbarItem(itemIdentifier: itemIdentifier, label: "General",
+				image: NSImage(named: NSImage.preferencesGeneralName)!, action: #selector(openGeneral))
 		case NSToolbarItem.Identifier.snippets:
-			return customToolbarItem(itemIdentifier: itemIdentifier, label: "Add snippets", image: NSImage(named: NSImage.addTemplateName)!, action: #selector(addSnippets))
+			return customToolbarItem(itemIdentifier: itemIdentifier, label: "Add snippets",
+				image: NSImage(named: NSImage.addTemplateName)!, action: #selector(addSnippets))
 		default:
 			return nil
 		}
 	}
 	
 	@objc private func openGeneral() {
-		
+		self.appData.preferencesView = 0
 	}
-	
+
 	@objc private func addSnippets() {
-		
+		self.appData.preferencesView = 1
 	}
-	
-	func customToolbarItem(itemIdentifier: NSToolbarItem.Identifier, label: String, image: NSImage, action: Selector) -> NSToolbarItem? {
+
+	func customToolbarItem(itemIdentifier: NSToolbarItem.Identifier, label: String,
+							image: NSImage, action: Selector) -> NSToolbarItem? {
 		let toolbarItem = NSToolbarItem(itemIdentifier: itemIdentifier)
 		toolbarItem.label = label
 		toolbarItem.action = action

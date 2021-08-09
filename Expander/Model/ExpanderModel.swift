@@ -33,5 +33,24 @@ class ExpanderModel: ObservableObject {
 			return event
 		}
 	}
+
+	func deleteUserInput() {
+	}
+
+	func pasteSnippet() {
+	}
+	func inputSnippet() {
+	//MARK: - delete and paste
+	}
 }
+
+/*
+let event1 = CGEventCreateKeyboardEvent(nil, 0x09, true); // cmd-v down
+CGEventSetFlags(event1, CGEventFlags.MaskCommand);
+CGEventPost(CGEventTapLocation.CGHIDEventTap, event1);
+
+let event2 = CGEventCreateKeyboardEvent(nil, 0x09, false); // cmd-v up
+CGEventSetFlags(event2, CGEventFlags.MaskCommand);
+CGEventPost(CGEventTapLocation.CGHIDEventTap, event2);
+*/
 

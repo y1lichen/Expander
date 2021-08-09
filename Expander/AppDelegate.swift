@@ -30,14 +30,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		[kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
 	}
 	
+	var appData =  AppData()
+
 	@objc func openPreferences() {
-		
 	}
-	
+
 	@objc func toggleExpander() {
-		
 	}
-	
+
 	func createStatusBar() {
 		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 		self.statusbarMenu = NSMenu()
@@ -59,7 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
 		self.createStatusBar()
-		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext)
+		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(appData)
 
 		// Create the window and set the content view.
 		window = NSWindow(
@@ -96,7 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	        if let error = error {
 	            // Replace this implementation with code to handle the error appropriately.
 	            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-	             
+
 	            /*
 	             Typical reasons for an error here include:
 	             * The parent directory does not exist, cannot be created, or disallows writing.
@@ -139,16 +139,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
 	    // Save changes in the application's managed object context before the application terminates.
 	    let context = persistentContainer.viewContext
-	    
+
 	    if !context.commitEditing() {
 	        NSLog("\(NSStringFromClass(type(of: self))) unable to commit editing to terminate")
 	        return .terminateCancel
 	    }
-	    
+
 	    if !context.hasChanges {
 	        return .terminateNow
 	    }
-	    
+
 	    do {
 	        try context.save()
 	    } catch {
@@ -159,7 +159,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	        if (result) {
 	            return .terminateCancel
 	        }
-	        
+
 	        let question = NSLocalizedString("Could not save changes while quitting. Quit anyway?", comment: "Quit without saves error question message")
 	        let info = NSLocalizedString("Quitting now will lose any changes you have made since the last successful save", comment: "Quit without saves error question info");
 	        let quitButton = NSLocalizedString("Quit anyway", comment: "Quit anyway button title")
@@ -169,7 +169,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	        alert.informativeText = info
 	        alert.addButton(withTitle: quitButton)
 	        alert.addButton(withTitle: cancelButton)
-	        
+
 	        let answer = alert.runModal()
 	        if answer == .alertSecondButtonReturn {
 	            return .terminateCancel

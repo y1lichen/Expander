@@ -10,10 +10,11 @@ import Foundation
 struct Snippets {
 	let trigger: String
 	let content: String
-	
+
 	func isMatch(_ inputString: String) -> Bool {
-			let matchTrigger = inputString.hasPrefix(self.trigger)
-			return matchTrigger
+		let matchTrigger = inputString.hasPrefix(self.trigger)
+		let isFullWord = (inputString.dropLast(self.trigger.count).last ?? " ").isWhitespace
+		return matchTrigger && isFullWord
 	}
 }
 

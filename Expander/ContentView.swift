@@ -8,16 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var model = ExpanderModel()
+	@EnvironmentObject var appData: AppData
     var body: some View {
-        Text("\(model.text)")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
+		VStack {
+			if self.appData.preferencesView == 0 {
+				GeneralSettingView()
+			} else {
+				AddSnippetsView()
+			}
+		}.frame(width: 400, height: 400, alignment: .center)
+	}
 }
 
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
