@@ -43,7 +43,7 @@ extension AppDelegate: NSToolbarDelegate {
 			return nil
 		}
 	}
-	
+
 	@objc private func openGeneral() {
 		self.appData.preferencesView = 0
 	}

@@ -11,14 +11,11 @@ import SwiftUI
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-	var window: NSWindow!
+	//var window: NSWindow?
 	// status bar
+	var window: NSWindow!
 	var statusbarItem: NSStatusItem!
 	var statusbarMenu: NSMenu!
-	//
-	// MARK: - create tool bar
-	//
-	//
 	/*
 	## get user permisission
 	- https://developer.apple.com/forums/thread/24288
@@ -29,14 +26,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		AXIsProcessTrustedWithOptions(
 		[kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
 	}
+	var appData = AppData()
 	
-	var appData =  AppData()
-
 	@objc func openPreferences() {
+		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(self.appData)
+		// Create the window and set the content view.
+		window = NSWindow(
+			contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+			styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+			backing: .buffered, defer: false)
+		window.center()
+		NSToolbar.prefToolBar.delegate = self
+		window.toolbar = .prefToolBar
+		window.contentView = NSHostingView(rootView: contentView)
+		window.makeKeyAndOrderFront(nil)
+		window.isReleasedWhenClosed = false
 	}
 
 	@objc func toggleExpander() {
 	}
+	
 
 	func createStatusBar() {
 		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -51,30 +60,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		self.statusbarMenu.addItem(toggle)
 		self.statusbarMenu.addItem(withTitle: "Preferences", action: #selector(openPreferences), keyEquivalent: ",")
 		self.statusbarMenu.addItem(NSMenuItem.separator())
-		self.statusbarMenu.addItem(withTitle: "Quit Expander", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+		self.statusbarMenu.addItem(withTitle: "Quit Expander",
+							action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
 	}
-
 
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
 		self.createStatusBar()
-		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(appData)
-
-		// Create the window and set the content view.
-		window = NSWindow(
-		    contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-		    styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-		    backing: .buffered, defer: false)
-		window.center()
-		//
-		NSToolbar.prefToolBar.delegate = self
-		window.toolbar = .prefToolBar
-		//
-		window.setFrameAutosaveName("Preferences")
-
-		window.contentView = NSHostingView(rootView: contentView)
-		window.makeKeyAndOrderFront(nil)
+		openPreferences()
 		self.getuserPermission()
 	}
 

@@ -5,6 +5,7 @@
 //  Created by 陳奕利 on 2021/8/8.
 //
 
+
 import Foundation
 import SwiftUI
 
@@ -24,10 +25,11 @@ class ExpanderModel: ObservableObject {
 				self.text += character
 			}
 		}
+		// global event
 		NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseUp, .otherMouseDown]) { _ in
 			self.text = ""
 		}
-		// testing
+		// in-app event
 		NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]) { event in
 			self.text = ""
 			return event
@@ -35,22 +37,27 @@ class ExpanderModel: ObservableObject {
 	}
 
 	func deleteUserInput() {
+		let eventSource = CGEventSource(stateID: .combinedSessionState)
+		let keydownEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x33, keyDown: true)
+		let keyupEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x33, keyDown: false)
+
+		keydownEvent?.post(tap: .cghidEventTap)
+		keyupEvent?.post(tap: .cghidEventTap)
 	}
 
 	func pasteSnippet() {
+		let eventSource = CGEventSource(stateID: .combinedSessionState)
+		let keydownEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: true)
+		let keyupEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: false)
+		keydownEvent!.flags = CGEventFlags.maskCommand
+		keyupEvent!.post(tap: CGEventTapLocation.cghidEventTap)
 	}
+
 	func inputSnippet() {
-	//MARK: - delete and paste
+	//MARK: -
+	// 1. register to clipboard
+	// 2.delete
+	// 3.paste
+	// 4.register origin input to clipboard
 	}
 }
-
-/*
-let event1 = CGEventCreateKeyboardEvent(nil, 0x09, true); // cmd-v down
-CGEventSetFlags(event1, CGEventFlags.MaskCommand);
-CGEventPost(CGEventTapLocation.CGHIDEventTap, event1);
-
-let event2 = CGEventCreateKeyboardEvent(nil, 0x09, false); // cmd-v up
-CGEventSetFlags(event2, CGEventFlags.MaskCommand);
-CGEventPost(CGEventTapLocation.CGHIDEventTap, event2);
-*/
-
