@@ -12,7 +12,7 @@ struct AddSnippetsView: View {
 	@State var showSheet = false
 	var body: some View {
 		VStack {
-			SnippetList()
+			SnippetTableView()
 			Spacer().frame(height: 3)
 			innerToolBarView(isShow: $showSheet)
 		}
@@ -22,35 +22,6 @@ struct AddSnippetsView: View {
 			SheetView(isShow: $showSheet)
 		}
     }
-}
-
-struct SnippetList: View {
-	@FetchRequest(entity: SnippetData.entity(), sortDescriptors: [NSSortDescriptor(key: "snippetTrigger", ascending: true)])
-	var results: FetchedResults<SnippetData>
-	@State var snippetslist: Array<SnippetData>?
-	var body: some View {
-//		List {
-//			ForEach(results) {
-//				result in
-//				SnippetListComponent(trigger: result.snippetTrigger ?? "", content: result.snippetContent ?? "").tag(result)
-//			}
-//		}
-		SnippetTableView()
-	}
-}
-
-struct SnippetListComponent: View {
-	var trigger: String
-	var content: String
-	var body: some View {
-		HStack {
-			Text(trigger)
-				.frame(width: 80)
-			Divider()
-			Text(content)
-				.frame(width: 220)
-		}
-	}
 }
 
 struct SheetView: View {
@@ -64,7 +35,11 @@ struct SheetView: View {
 			data.snippetTrigger = self.trigger
 			data.snippetContent = self.content
 			data.id = UUID()
-			try? self.viewContext.save()
+			do {
+				try self.viewContext.save()
+			} catch {
+				print(error.localizedDescription)
+			}
 		}
 	}
 	var body: some View {
@@ -87,6 +62,8 @@ struct SheetView: View {
 				Button("Done") {
 					self.isShow = false
 					self.saveData()
+					let nc = NotificationCenter.default
+					nc.post(name: Notification.Name("reloadtable"), object: nil)
 				}
 			}
 		}
@@ -111,6 +88,8 @@ struct ListButton: View {
 }
 
 struct innerToolBarView: View {
+	
+	
 	@Binding var isShow: Bool
 	func add() {
 		self.isShow = true
@@ -139,9 +118,10 @@ struct SnippetTableView: NSViewControllerRepresentable {
 }
 
 class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegate {
+	
+	//
 	var scrollView: NSScrollView!
 	var tableView: NSTableView!
-	
 	// MARK: - core data
 	let viewContext = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	lazy var dataController: NSFetchedResultsController<SnippetData> = {
@@ -165,7 +145,6 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		} catch {
 			fatalError("\(error)")
 		}
-		//
 		// MARK: - core data #end
 		scrollView = NSScrollView(frame: self.view.bounds)
 		self.view.addSubview(scrollView)
@@ -174,41 +153,49 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		tableView.dataSource = self
 		// first column
 		let firstCol = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "firstCol"))
-		firstCol.width = 120
+		firstCol.width = 130
 		firstCol.title = "Trigger"
 		tableView.addTableColumn(firstCol)
 		// second column
 		let secondCol = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "secondCol"))
-		secondCol.width = scrollView.bounds.size.width - 120
+		secondCol.width = scrollView.bounds.size.width - 130
 		secondCol.title = "Snippet"
 		tableView.addTableColumn(secondCol)
-		
 		scrollView.documentView = tableView
-	}
-	//
-	override var representedObject: Any? {
-		didSet {
+		
+		//
+		func reloadTable(notfification: Notification) -> Void {
+			tableView.reloadData()
 		}
+		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "reloadtable"), object: nil, queue: nil, using: reloadTable)
 	}
 }
 
 extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource {
 	
-	func numberOfSections(in tableview: NSTableView) -> Int {
-		return dataController.sections?.count ?? 0
+	
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		tableView.beginUpdates()
+	}
+
+	
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		tableView.endUpdates()
 	}
 	
 	func numberOfRows(in tableView: NSTableView) -> Int {
-		return 15
+		return dataController.fetchedObjects?.count ?? 0
 	}
+	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		let textfield = NSTextField()
+		let snippetItem = dataController.fetchedObjects![row]
 		if tableColumn?.identifier == NSUserInterfaceItemIdentifier("firstCol") {
 			// trigger column
-			textfield.stringValue = "test"
+			textfield.stringValue = snippetItem.snippetTrigger ?? "--"
 		} else {
 			// snippet column
-			textfield.stringValue = "--"
+			textfield.stringValue = snippetItem.snippetContent ?? "--"
 		}
 		let cell = NSTableCellView()
 		cell.addSubview(textfield)
