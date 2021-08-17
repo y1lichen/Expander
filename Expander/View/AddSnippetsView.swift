@@ -83,19 +83,19 @@ struct ListButton: View {
 				.resizable()
 		}
 		.buttonStyle(BorderlessButtonStyle())
-		.frame(width: 35, height: 50)
+		.frame(width: 35, height: 55)
 	}
 }
 
 struct innerToolBarView: View {
-	
 	
 	@Binding var isShow: Bool
 	func add() {
 		self.isShow = true
 	}
 	func remove() {
-		
+		let nc = NotificationCenter.default
+		nc.post(name: Notification.Name("deleteRow"), object: nil)
 	}
 	var body: some View {
 		HStack(spacing: 0) {
@@ -118,7 +118,6 @@ struct SnippetTableView: NSViewControllerRepresentable {
 }
 
 class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegate {
-	
 	//
 	var scrollView: NSScrollView!
 	var tableView: NSTableView!
@@ -139,13 +138,12 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		//
 		do {
 			try self.dataController.performFetch()
 		} catch {
 			fatalError("\(error)")
 		}
-		// MARK: - core data #end
+		//
 		scrollView = NSScrollView(frame: self.view.bounds)
 		self.view.addSubview(scrollView)
 		tableView = NSTableView(frame: CGRect(x: 0, y: 0, width: scrollView.bounds.size.width, height: scrollView.bounds.size.height))
@@ -163,33 +161,45 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		tableView.addTableColumn(secondCol)
 		scrollView.documentView = tableView
 		
-		//
+		// MARK: - reload data
 		func reloadTable(notfification: Notification) -> Void {
 			tableView.reloadData()
 		}
 		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "reloadtable"), object: nil, queue: nil, using: reloadTable)
+		
+		// MARK: - delete handling
+		func deleteRow(notification: Notification) -> Void {
+			// remove from core data
+			guard let index = tableView.selectedRowIndexes.first else {
+				return }
+			let path = IndexPath(item: index, section: 0)
+			let objectToDelete = dataController.object(at: path)
+			viewContext.delete(objectToDelete)
+			try? viewContext.save()
+			// remove from view
+			let selectedRow = tableView.selectedRow
+			tableView.removeRows(at: IndexSet(integer: selectedRow), withAnimation: .effectFade)
+		}
+		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "deleteRow"), object: nil, queue: nil, using: deleteRow)
 	}
 }
 
 extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource {
 	
-	
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.beginUpdates()
 	}
 
-	
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.endUpdates()
 	}
-	
+	// Table View
 	func numberOfRows(in tableView: NSTableView) -> Int {
 		return dataController.fetchedObjects?.count ?? 0
 	}
-	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-		let textfield = NSTextField()
 		let snippetItem = dataController.fetchedObjects![row]
+		let textfield = NSTextField()
 		if tableColumn?.identifier == NSUserInterfaceItemIdentifier("firstCol") {
 			// trigger column
 			textfield.stringValue = snippetItem.snippetTrigger ?? "--"
