@@ -49,7 +49,6 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		secondCol.title = "Snippet"
 		tableView.addTableColumn(secondCol)
 		scrollView.documentView = tableView
-		
 		// MARK: - reload data
 		func reloadTable(notfification: Notification) -> Void {
 			tableView.reloadData()
@@ -79,26 +78,11 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		let selectedRow = tableView.selectedRow
 		tableView.removeRows(at: IndexSet(integer: selectedRow), withAnimation: .effectFade)
 	}
-	// for deleting row by deletekey down
 	var deletekeyEvent: Any?
 }
 
 extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSControlTextEditingDelegate {
 	// MARK: - delete handling
-	override func keyDown(with event: NSEvent) {
-		if event.isDeleteKey {
-			self.removeRow()
-		}
-	}
-	
-	func createDeleteKeyEventMonitor() {
-		print("start detect")
-		self.deletekeyEvent = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-			self.keyDown(with: $0)
-			return $0
-		}
-	}
-	
 	func controlTextDidEndEditing(_ obj: Notification) {
 		if let textfield = obj.object as? NSTextField {
 			let newStr = textfield.stringValue
@@ -115,21 +99,23 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 				objectToUpdate.setValue(newStr, forKey: "snippetContent")
 			}
 			try? viewContext.save()
-			createDeleteKeyEventMonitor()
 		}
 	}
 	
-	func tableViewSelectionDidChange(_ notification: Notification) {
-		createDeleteKeyEventMonitor()
-	}
-	
-	func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {
-		if let deletekeyEvent = deletekeyEvent {
-			print("stop detect")
-			NSEvent.removeMonitor(deletekeyEvent)
+	override func keyDown(with event: NSEvent) {
+		let isNotEditing: Bool = (self.tableView.editedRow == -1)
+			if event.isDeleteKey && isNotEditing {
+				self.removeRow()
+			}
 		}
-		return true
-	}
+	
+	func createDeleteKeyEventMonitor() {
+			print("start detect")
+			self.deletekeyEvent = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+				self.keyDown(with: $0)
+				return $0
+			}
+		}
 	/*
 	---------------------------------
 	*/

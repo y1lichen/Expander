@@ -10,4 +10,5 @@ import Foundation
 class AppData: ObservableObject {
 	@Published var isOn: Bool = true
 	@Published var preferencesView: Int = 0
+	@Published var tableSortDescriptor: NSSortDescriptor = NSSortDescriptor(keyPath: \SnippetData.snippetTrigger, ascending: true)
 }
