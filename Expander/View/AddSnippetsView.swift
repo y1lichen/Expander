@@ -34,7 +34,6 @@ struct SheetView: View {
 		if (trigger != "") && (content != "") {
 			data.snippetTrigger = self.trigger
 			data.snippetContent = self.content
-			data.id = UUID()
 			do {
 				try self.viewContext.save()
 			} catch {
@@ -117,7 +116,7 @@ struct SnippetTableView: NSViewControllerRepresentable {
 	}
 }
 
-class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegate {
+class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegate, NSTextFieldDelegate {
 	//
 	var scrollView: NSScrollView!
 	var tableView: NSTableView!
@@ -130,7 +129,6 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		dataController.delegate = self
 		return dataController
 	}()
-	
 	override func loadView() {
 		self.view = NSView()
 		self.view.frame = CGRect(origin: .zero, size: CGSize(width: 335, height: 345))
@@ -184,7 +182,26 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 	}
 }
 
-extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource {
+extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSControlTextEditingDelegate {
+	// MARK: - delete handling
+	func controlTextDidEndEditing(_ obj: Notification) {
+		if let textfield = obj.object as? NSTextField {
+			let newStr = textfield.stringValue
+			let cell = textfield.superview!
+			let row = tableView.row(for: cell)
+			let col = tableView.column(for: cell)
+			let path = IndexPath(item: row, section: 0)
+			let objectToUpdate = dataController.object(at: path)
+			if col == 0 {
+				// trigger
+				objectToUpdate.setValue(newStr, forKey: "snippetTrigger")
+			} else {
+				// snippet
+				objectToUpdate.setValue(newStr, forKey: "snippetContent")
+			}
+			try? viewContext.save()
+		}
+	}
 	
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.beginUpdates()
@@ -199,7 +216,14 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource {
 	}
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		let snippetItem = dataController.fetchedObjects![row]
-		let textfield = NSTextField()
+		let textfield: NSTextField = {
+			let textfield = NSTextField()
+			textfield.isBordered = false
+			textfield.translatesAutoresizingMaskIntoConstraints = false
+			textfield.isBezeled = true
+			textfield.delegate = self
+			return textfield
+		}()
 		if tableColumn?.identifier == NSUserInterfaceItemIdentifier("firstCol") {
 			// trigger column
 			textfield.stringValue = snippetItem.snippetTrigger ?? "--"
@@ -207,13 +231,14 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource {
 			// snippet column
 			textfield.stringValue = snippetItem.snippetContent ?? "--"
 		}
-		let cell = NSTableCellView()
-		cell.addSubview(textfield)
-		textfield.isBordered = false
-		textfield.translatesAutoresizingMaskIntoConstraints = false
-		cell.addConstraint(NSLayoutConstraint(item: textfield, attribute: .centerY, relatedBy: .equal, toItem: cell, attribute: .centerY, multiplier: 1, constant: 0))
-		cell.addConstraint(NSLayoutConstraint(item: textfield, attribute: .left, relatedBy: .equal, toItem: cell, attribute: .left, multiplier: 1, constant: 0))
-		cell.addConstraint(NSLayoutConstraint(item: textfield, attribute: .right, relatedBy: .equal, toItem: cell, attribute: .right, multiplier: 1, constant: 0))
+		let cell: NSTableCellView = {
+			let tablecell = NSTableCellView()
+			tablecell.addSubview(textfield)
+			tablecell.addConstraint(NSLayoutConstraint(item: textfield, attribute: .centerY, relatedBy: .equal, toItem: tablecell, attribute: .centerY, multiplier: 1, constant: 0))
+			tablecell.addConstraint(NSLayoutConstraint(item: textfield, attribute: .left, relatedBy: .equal, toItem: tablecell, attribute: .left, multiplier: 1, constant: 0))
+			tablecell.addConstraint(NSLayoutConstraint(item: textfield, attribute: .right, relatedBy: .equal, toItem: tablecell, attribute: .right, multiplier: 1, constant: 0))
+			return tablecell
+		}()
 		return cell
 	}
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn, row: Int) -> NSTableRowView? {
