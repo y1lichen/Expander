@@ -1,120 +1,11 @@
 //
-//  AddSnippetsView.swift
+//  SnippetTableView.swift
 //  Expander
 //
-//  Created by 陳奕利 on 2021/8/9.
+//  Created by 陳奕利 on 2021/8/18.
 //
 
 import AppKit
-import SwiftUI
-
-struct AddSnippetsView: View {
-	@State var showSheet = false
-	var body: some View {
-		VStack {
-			SnippetTableView()
-			Spacer().frame(height: 3)
-			innerToolBarView(isShow: $showSheet)
-		}
-		.border(Color(NSColor.gridColor), width: 1.5)
-		.padding(15)
-		.sheet(isPresented: $showSheet) {
-			SheetView(isShow: $showSheet)
-		}
-    }
-}
-
-struct SheetView: View {
-	@Environment(\.managedObjectContext) private var viewContext
-	@Binding var isShow: Bool
-	@State var trigger: String = ""
-	@State var content: String = ""
-	func saveData() {
-		let data = SnippetData(context: self.viewContext)
-		if (trigger != "") && (content != "") {
-			data.snippetTrigger = self.trigger
-			data.snippetContent = self.content
-			do {
-				try self.viewContext.save()
-			} catch {
-				print(error.localizedDescription)
-			}
-		}
-	}
-	var body: some View {
-		VStack {
-			Text("Create new snippet")
-				.font(.headline)
-				.fontWeight(.heavy)
-			Spacer()
-			HStack {
-				TextField("trigger", text: $trigger)
-					.frame(width: 80)
-				TextField("snippet", text: $content)
-			}
-			Spacer().frame(maxHeight: 20)
-			HStack {
-				Button("Cancel") {
-					self.isShow = false
-				}
-				Spacer()
-				Button("Done") {
-					self.isShow = false
-					self.saveData()
-					let nc = NotificationCenter.default
-					nc.post(name: Notification.Name("reloadtable"), object: nil)
-				}
-			}
-		}
-		.frame(width: 300, height: 100)
-		.padding()
-	}
-}
-
-
-/* add, remove button */
-struct ListButton: View {
-	var imageName: String
-	var action: () -> Void
-	var body: some View {
-		Button(action: action) {
-			Image(nsImage: NSImage(named: imageName)!)
-				.resizable()
-		}
-		.buttonStyle(BorderlessButtonStyle())
-		.frame(width: 35, height: 55)
-	}
-}
-
-struct innerToolBarView: View {
-	
-	@Binding var isShow: Bool
-	func add() {
-		self.isShow = true
-	}
-	func remove() {
-		let nc = NotificationCenter.default
-		nc.post(name: Notification.Name("deleteRow"), object: nil)
-	}
-	var body: some View {
-		HStack(spacing: 0) {
-			ListButton(imageName: NSImage.addTemplateName, action: add)
-			Divider()
-			ListButton(imageName: NSImage.removeTemplateName, action: remove)
-			Divider()
-			Spacer()
-		}.frame(height: 20)
-	}
-}
-
-
-struct SnippetTableView: NSViewControllerRepresentable {
-	func makeNSViewController(context: Context) -> some NSViewController {
-		return SnippetTableContoller()
-	}
-	func updateNSViewController(_ nsViewController: NSViewControllerType, context: Context) {
-	}
-}
 
 class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegate, NSTextFieldDelegate {
 	//
@@ -167,23 +58,47 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		
 		// MARK: - delete handling
 		func deleteRow(notification: Notification) -> Void {
-			// remove from core data
-			guard let index = tableView.selectedRowIndexes.first else {
-				return }
-			let path = IndexPath(item: index, section: 0)
-			let objectToDelete = dataController.object(at: path)
-			viewContext.delete(objectToDelete)
-			try? viewContext.save()
-			// remove from view
-			let selectedRow = tableView.selectedRow
-			tableView.removeRows(at: IndexSet(integer: selectedRow), withAnimation: .effectFade)
+			removeRow()
 		}
 		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "deleteRow"), object: nil, queue: nil, using: deleteRow)
+		//
+		func deselectAll(notification: Notification) -> Void {
+			tableView.deselectAll(nil)
+		}
+		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "addRow"), object: nil, queue: nil, using: deselectAll)
 	}
+	func removeRow() {
+		// remove from core data
+		guard let index = tableView.selectedRowIndexes.first else {
+			return }
+		let path = IndexPath(item: index, section: 0)
+		let objectToDelete = dataController.object(at: path)
+		viewContext.delete(objectToDelete)
+		try? viewContext.save()
+		// remove from view
+		let selectedRow = tableView.selectedRow
+		tableView.removeRows(at: IndexSet(integer: selectedRow), withAnimation: .effectFade)
+	}
+	// for deleting row by deletekey down
+	var deletekeyEvent: Any?
 }
 
 extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSControlTextEditingDelegate {
 	// MARK: - delete handling
+	override func keyDown(with event: NSEvent) {
+		if event.isDeleteKey {
+			self.removeRow()
+		}
+	}
+	
+	func createDeleteKeyEventMonitor() {
+		print("start detect")
+		self.deletekeyEvent = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+			self.keyDown(with: $0)
+			return $0
+		}
+	}
+	
 	func controlTextDidEndEditing(_ obj: Notification) {
 		if let textfield = obj.object as? NSTextField {
 			let newStr = textfield.stringValue
@@ -200,13 +115,28 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 				objectToUpdate.setValue(newStr, forKey: "snippetContent")
 			}
 			try? viewContext.save()
+			createDeleteKeyEventMonitor()
 		}
 	}
 	
+	func tableViewSelectionDidChange(_ notification: Notification) {
+		createDeleteKeyEventMonitor()
+	}
+	
+	func control(_ control: NSControl, textShouldBeginEditing fieldEditor: NSText) -> Bool {
+		if let deletekeyEvent = deletekeyEvent {
+			print("stop detect")
+			NSEvent.removeMonitor(deletekeyEvent)
+		}
+		return true
+	}
+	/*
+	---------------------------------
+	*/
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.beginUpdates()
 	}
-
+	
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.endUpdates()
 	}
@@ -214,6 +144,7 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 	func numberOfRows(in tableView: NSTableView) -> Int {
 		return dataController.fetchedObjects?.count ?? 0
 	}
+	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		let snippetItem = dataController.fetchedObjects![row]
 		let textfield: NSTextField = {

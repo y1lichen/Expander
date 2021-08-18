@@ -13,6 +13,7 @@
 		D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */; };
 		D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */; };
 		D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */; };
+		D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4567AD326CCFCC50007224E /* SnippetTableView.swift */; };
 		D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621826BFAC1300E4A419 /* AppDelegate.swift */; };
 		D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621A26BFAC1300E4A419 /* ContentView.swift */; };
 		D48A622026BFAC1400E4A419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48A621F26BFAC1400E4A419 /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 		D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingView.swift; sourceTree = "<group>"; };
 		D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSnippetsView.swift; sourceTree = "<group>"; };
 		D40F864A26C54D5F006C9FC0 /* Expander.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expander.xcdatamodel; sourceTree = "<group>"; };
+		D4567AD326CCFCC50007224E /* SnippetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetTableView.swift; sourceTree = "<group>"; };
 		D48A621526BFAC1300E4A419 /* Expander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D48A621826BFAC1300E4A419 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D48A621A26BFAC1300E4A419 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -56,6 +58,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D4567AD226CCFC9A0007224E /* AddSnippetView */ = {
+			isa = PBXGroup;
+			children = (
+				D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */,
+				D4567AD326CCFCC50007224E /* SnippetTableView.swift */,
+			);
+			path = AddSnippetView;
+			sourceTree = "<group>";
+		};
 		D48A620C26BFAC1300E4A419 = {
 			isa = PBXGroup;
 			children = (
@@ -104,7 +115,7 @@
 				D48A621A26BFAC1300E4A419 /* ContentView.swift */,
 				D48A623626BFAD3C00E4A419 /* ToolBar.swift */,
 				D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */,
-				D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */,
+				D4567AD226CCFC9A0007224E /* AddSnippetView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -196,6 +207,7 @@
 				D4028F1726CBBCE4008076D9 /* SnippetData+CoreDataProperties.swift in Sources */,
 				D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */,
 				D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */,
+				D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */,
 				D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */,
 				D4051D8B26C0C0890067B966 /* AppData.swift in Sources */,
 				D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */,
