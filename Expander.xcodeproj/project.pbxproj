@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D4028F1626CBBCE4008076D9 /* SnippetData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4028F1426CBBCE4008076D9 /* SnippetData+CoreDataClass.swift */; };
-		D4028F1726CBBCE4008076D9 /* SnippetData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4028F1526CBBCE4008076D9 /* SnippetData+CoreDataProperties.swift */; };
 		D4051D8B26C0C0890067B966 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8A26C0C0890067B966 /* AppData.swift */; };
 		D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */; };
 		D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */; };
@@ -23,11 +21,11 @@
 		D48A623326BFAD0200E4A419 /* ExpanderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623226BFAD0200E4A419 /* ExpanderModel.swift */; };
 		D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623426BFAD2400E4A419 /* SnippetsModel.swift */; };
 		D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623626BFAD3C00E4A419 /* ToolBar.swift */; };
+		D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */; };
+		D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D4028F1426CBBCE4008076D9 /* SnippetData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D4028F1526CBBCE4008076D9 /* SnippetData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D4051D8A26C0C0890067B966 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingView.swift; sourceTree = "<group>"; };
 		D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSnippetsView.swift; sourceTree = "<group>"; };
@@ -45,6 +43,8 @@
 		D48A623226BFAD0200E4A419 /* ExpanderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpanderModel.swift; sourceTree = "<group>"; };
 		D48A623426BFAD2400E4A419 /* SnippetsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsModel.swift; sourceTree = "<group>"; };
 		D48A623626BFAD3C00E4A419 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
+		D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +61,8 @@
 		D4567AD226CCFC9A0007224E /* AddSnippetView */ = {
 			isa = PBXGroup;
 			children = (
-				D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */,
 				D4567AD326CCFCC50007224E /* SnippetTableView.swift */,
+				D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */,
 			);
 			path = AddSnippetView;
 			sourceTree = "<group>";
@@ -70,8 +70,8 @@
 		D48A620C26BFAC1300E4A419 = {
 			isa = PBXGroup;
 			children = (
-				D4028F1426CBBCE4008076D9 /* SnippetData+CoreDataClass.swift */,
-				D4028F1526CBBCE4008076D9 /* SnippetData+CoreDataProperties.swift */,
+				D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */,
+				D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */,
 				D48A621726BFAC1300E4A419 /* Expander */,
 				D48A621626BFAC1300E4A419 /* Products */,
 			);
@@ -201,15 +201,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4028F1626CBBCE4008076D9 /* SnippetData+CoreDataClass.swift in Sources */,
 				D48A623326BFAD0200E4A419 /* ExpanderModel.swift in Sources */,
 				D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */,
-				D4028F1726CBBCE4008076D9 /* SnippetData+CoreDataProperties.swift in Sources */,
 				D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */,
 				D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */,
 				D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */,
 				D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */,
 				D4051D8B26C0C0890067B966 /* AppData.swift in Sources */,
+				D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */,
+				D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */,
 				D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */,
 				D48A623126BFACD400E4A419 /* DeleteKeyEvent.swift in Sources */,
 				D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */,

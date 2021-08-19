@@ -70,6 +70,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		self.createStatusBar()
 		openPreferences()
 		self.getuserPermission()
+		UserDefaults.standard.register(defaults: [
+			"sortMethod": "snippetTrigger"
+			])
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {

@@ -13,16 +13,23 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 	var tableView: NSTableView!
 	// MARK: - core data
 	let viewContext = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-	lazy var dataController: NSFetchedResultsController<SnippetData> = {
+	
+	func setController() -> NSFetchedResultsController<SnippetData> {
+		let sortMethod =  UserDefaults.standard.string(forKey: "sortMethod")
 		let request = NSFetchRequest<SnippetData>(entityName: "SnippetData")
-		request.sortDescriptors = [NSSortDescriptor(key: "snippetTrigger", ascending: true)]
+		request.sortDescriptors = [NSSortDescriptor(key: sortMethod, ascending: true)]
 		let dataController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 		dataController.delegate = self
 		return dataController
+	}
+	
+	lazy var dataController: NSFetchedResultsController<SnippetData> = {
+		return setController()
 	}()
+	
 	override func loadView() {
 		self.view = NSView()
-		self.view.frame = CGRect(origin: .zero, size: CGSize(width: 335, height: 345))
+		self.view.frame = CGRect(origin: .zero, size: CGSize(width: 355, height: 345))
 	}
 	
 	override func viewDidLoad() {
@@ -60,11 +67,22 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 			removeRow()
 		}
 		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "deleteRow"), object: nil, queue: nil, using: deleteRow)
-		//
+		// deselect row before adding new snippet
 		func deselectAll(notification: Notification) -> Void {
 			tableView.deselectAll(nil)
 		}
 		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "addRow"), object: nil, queue: nil, using: deselectAll)
+		// MARK: - change sorting method
+		func changesortDescriptor(notification: Notification) {
+			self.dataController = setController()
+			do {
+				try self.dataController.performFetch()
+			} catch {
+				fatalError("\(error)")
+			}
+			self.tableView.reloadData()
+		}
+		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "sortdescriptorchanged"), object: nil, queue: nil, using: changesortDescriptor)
 	}
 	func removeRow() {
 		// remove from core data
@@ -110,7 +128,6 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 		}
 	
 	func createDeleteKeyEventMonitor() {
-			print("start detect")
 			self.deletekeyEvent = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
 				self.keyDown(with: $0)
 				return $0

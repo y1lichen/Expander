@@ -11,9 +11,11 @@ struct AddSnippetsView: View {
 	@State var showSheet = false
 	var body: some View {
 		VStack {
+			headerToolBarView()
+			Spacer().frame(height: 3)
 			SnippetTableView()
 			Spacer().frame(height: 3)
-			innerToolBarView(isShow: $showSheet)
+			footerToolBarView(isShow: $showSheet)
 		}
 		.border(Color(NSColor.gridColor), width: 1.5)
 		.padding(15)
@@ -33,6 +35,7 @@ struct SheetView: View {
 		if (trigger != "") && (content != "") {
 			data.snippetTrigger = self.trigger
 			data.snippetContent = self.content
+			data.date = Date()
 			do {
 				try self.viewContext.save()
 			} catch {
@@ -85,7 +88,20 @@ struct ListButton: View {
 	}
 }
 
-struct innerToolBarView: View {
+struct headerToolBarView: View {
+	@EnvironmentObject var appData: AppData
+	var body: some View {
+		HStack {
+			Picker(selection: $appData.tableSortDescriptor, label: Text("sort by")) {
+				Text("Trigger").tag("snippetTrigger")
+				Text("Date").tag("date")
+			}
+			.frame(width: 150, alignment: .leading)
+		}
+	}
+}
+
+struct footerToolBarView: View {
 	
 	func sendNotification(notificationName: String) {
 		let nc = NotificationCenter.default
@@ -111,7 +127,10 @@ struct innerToolBarView: View {
 	}
 }
 
-
+/*
+--
+/Users/chenli/Desktop/workplace/Expander/Expander/View/AddSnippetView/SnippetTableView.swift
+*/
 struct SnippetTableView: NSViewControllerRepresentable {
 	func makeNSViewController(context: Context) -> some NSViewController {
 		return SnippetTableContoller()
