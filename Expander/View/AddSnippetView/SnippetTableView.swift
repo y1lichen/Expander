@@ -56,22 +56,29 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		secondCol.title = "Snippet"
 		tableView.addTableColumn(secondCol)
 		scrollView.documentView = tableView
+		
+		func addNotificationCenterObserver(notificationName: String, action: @escaping (Notification) -> Void) {
+			NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: notificationName), object: nil, queue: nil, using: action)
+		}
+		
 		// MARK: - reload data
 		func reloadTable(notfification: Notification) -> Void {
 			tableView.reloadData()
 		}
-		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "reloadtable"), object: nil, queue: nil, using: reloadTable)
+		addNotificationCenterObserver(notificationName: "reloadtable", action: reloadTable)
 		
 		// MARK: - delete handling
 		func deleteRow(notification: Notification) -> Void {
 			removeRow()
 		}
-		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "deleteRow"), object: nil, queue: nil, using: deleteRow)
+		addNotificationCenterObserver(notificationName: "deleteRow", action: deleteRow)
+		
 		// deselect row before adding new snippet
 		func deselectAll(notification: Notification) -> Void {
 			tableView.deselectAll(nil)
 		}
-		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "addRow"), object: nil, queue: nil, using: deselectAll)
+		addNotificationCenterObserver(notificationName: "addRow", action: deselectAll)
+		
 		// MARK: - change sorting method
 		func changesortDescriptor(notification: Notification) {
 			self.dataController = setController()
@@ -82,7 +89,14 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 			}
 			self.tableView.reloadData()
 		}
-		NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "sortdescriptorchanged"), object: nil, queue: nil, using: changesortDescriptor)
+		addNotificationCenterObserver(notificationName: "sortdescriptorchanged", action: changesortDescriptor)
+		
+		// MARK: - search hansearches
+		func searchTableView(notification: Notification) {
+			guard let searchquery = notification.userInfo?["searchQuery"] else { return }
+			print(searchquery)
+		}
+		addNotificationCenterObserver(notificationName: "search", action: searchTableView)
 	}
 	func removeRow() {
 		// remove from core data

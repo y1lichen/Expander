@@ -12,7 +12,7 @@ struct AddSnippetsView: View {
 	var body: some View {
 		VStack {
 			headerToolBarView()
-			Spacer().frame(height: 3)
+			Spacer().frame(height: 4)
 			SnippetTableView()
 			Spacer().frame(height: 3)
 			footerToolBarView(isShow: $showSheet)
@@ -88,18 +88,43 @@ struct ListButton: View {
 	}
 }
 
-struct headerToolBarView: View {
-	@EnvironmentObject var appData: AppData
-	var body: some View {
-		HStack {
-			Picker(selection: $appData.tableSortDescriptor, label: Text("sort by")) {
-				Text("Trigger").tag("snippetTrigger")
-				Text("Date").tag("date")
-			}
-			.frame(width: 150, alignment: .leading)
+struct seacrhText {
+	var text = "" {
+		didSet {
+			let nc = NotificationCenter.default
+			nc.post(name: Notification.Name("search"), object: nil, userInfo: ["searchQuery": text])
 		}
 	}
 }
+
+struct headerToolBarView: View {
+	@EnvironmentObject var appData: AppData
+	@State var searchText = seacrhText()
+	var body: some View {
+		VStack(alignment: .leading) {
+			HStack {
+				Spacer().frame(width: 15)
+				Picker(selection: $appData.tableSortDescriptor, label: Text("sort by")) {
+					Text("Trigger").tag("snippetTrigger")
+					Text("Date").tag("date")
+				}
+				.frame(width: 150, alignment: .leading)
+				Spacer()
+				TextField("Search ...", text: $searchText.text,
+					// auto cleanup textfield when lose focus
+					onEditingChanged: {
+					(focus) in
+					if !focus {
+						self.searchText.text = ""
+					}
+				})
+					.textFieldStyle(PlainTextFieldStyle())
+				Spacer().frame(width: 15)
+			}
+		}
+	}
+}
+
 
 struct footerToolBarView: View {
 	
