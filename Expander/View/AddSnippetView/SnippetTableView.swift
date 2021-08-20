@@ -11,6 +11,11 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 	//
 	var scrollView: NSScrollView!
 	var tableView: NSTableView!
+	//
+	var sortMethodMenu: NSPopUpButton!
+	var searchField: NSSearchField!
+	//
+	var predicate: NSPredicate? = nil
 	// MARK: - core data
 	let viewContext = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 	
@@ -18,6 +23,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		let sortMethod =  UserDefaults.standard.string(forKey: "sortMethod")
 		let request = NSFetchRequest<SnippetData>(entityName: "SnippetData")
 		request.sortDescriptors = [NSSortDescriptor(key: sortMethod, ascending: true)]
+		request.predicate = self.predicate
 		let dataController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 		dataController.delegate = self
 		return dataController
@@ -32,6 +38,46 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		self.view.frame = CGRect(origin: .zero, size: CGSize(width: 355, height: 345))
 	}
 	
+	@objc func sortMethodChanged() {
+		let methodIndex = self.sortMethodMenu.indexOfSelectedItem
+		if methodIndex == 0 {
+			// sort by trigger
+			UserDefaults.standard.setValue("snippetTrigger", forKey: "sortMethod")
+		} else {
+			// sort bt date
+			UserDefaults.standard.setValue("date", forKey: "sortMethod")
+		}
+		self.dataController = setController()
+		do {
+			try self.dataController.performFetch()
+		} catch {
+			fatalError("\(error)")
+		}
+		self.tableView.reloadData()
+	}
+	
+	// MARK: - sort method changed handling
+	func addSortMethodChangingMenu() {
+		let sortMethod =  UserDefaults.standard.string(forKey: "sortMethod")
+		sortMethodMenu = NSPopUpButton(frame: CGRect(x: 10, y: 345, width: 120, height: 20))
+		sortMethodMenu.target = self
+		sortMethodMenu.action = #selector(self.sortMethodChanged)
+		if sortMethod == "trigger" {
+			sortMethodMenu.selectItem(at: 0)
+		} else {
+			sortMethodMenu.selectItem(at: 1)
+		}
+		sortMethodMenu.addItem(withTitle: "trigger")
+		sortMethodMenu.addItem(withTitle: "date")
+		self.view.addSubview(sortMethodMenu)
+	}
+	
+	// MARK: - searching
+	func addSearchField() {
+		searchField = NSSearchField(frame: CGRect(x: 180, y: 345, width: 175, height: 20))
+		self.view.addSubview(searchField)
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		do {
@@ -40,7 +86,10 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 			fatalError("\(error)")
 		}
 		//
-		scrollView = NSScrollView(frame: self.view.bounds)
+		addSortMethodChangingMenu()
+		addSearchField()
+		//
+		scrollView = NSScrollView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width , height: self.view.bounds.size.width - 30))
 		self.view.addSubview(scrollView)
 		tableView = NSTableView(frame: CGRect(x: 0, y: 0, width: scrollView.bounds.size.width, height: scrollView.bounds.size.height))
 		tableView.delegate = self
@@ -78,18 +127,6 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 			tableView.deselectAll(nil)
 		}
 		addNotificationCenterObserver(notificationName: "addRow", action: deselectAll)
-		
-		// MARK: - change sorting method
-		func changesortDescriptor(notification: Notification) {
-			self.dataController = setController()
-			do {
-				try self.dataController.performFetch()
-			} catch {
-				fatalError("\(error)")
-			}
-			self.tableView.reloadData()
-		}
-		addNotificationCenterObserver(notificationName: "sortdescriptorchanged", action: changesortDescriptor)
 		
 		// MARK: - search hansearches
 		func searchTableView(notification: Notification) {
@@ -195,3 +232,4 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 		return rowView
 	}
 }
+

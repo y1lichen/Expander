@@ -11,7 +11,6 @@ struct AddSnippetsView: View {
 	@State var showSheet = false
 	var body: some View {
 		VStack {
-			headerToolBarView()
 			Spacer().frame(height: 4)
 			SnippetTableView()
 			Spacer().frame(height: 3)
@@ -87,44 +86,6 @@ struct ListButton: View {
 		.frame(width: 35, height: 55)
 	}
 }
-
-struct seacrhText {
-	var text = "" {
-		didSet {
-			let nc = NotificationCenter.default
-			nc.post(name: Notification.Name("search"), object: nil, userInfo: ["searchQuery": text])
-		}
-	}
-}
-
-struct headerToolBarView: View {
-	@EnvironmentObject var appData: AppData
-	@State var searchText = seacrhText()
-	var body: some View {
-		VStack(alignment: .leading) {
-			HStack {
-				Spacer().frame(width: 15)
-				Picker(selection: $appData.tableSortDescriptor, label: Text("sort by")) {
-					Text("Trigger").tag("snippetTrigger")
-					Text("Date").tag("date")
-				}
-				.frame(width: 150, alignment: .leading)
-				Spacer()
-				TextField("Search ...", text: $searchText.text,
-					// auto cleanup textfield when lose focus
-					onEditingChanged: {
-					(focus) in
-					if !focus {
-						self.searchText.text = ""
-					}
-				})
-					.textFieldStyle(PlainTextFieldStyle())
-				Spacer().frame(width: 15)
-			}
-		}
-	}
-}
-
 
 struct footerToolBarView: View {
 	
