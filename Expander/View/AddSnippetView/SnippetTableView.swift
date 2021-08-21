@@ -48,6 +48,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		self.tableView.reloadData()
 	}
 	
+	
 	@objc func sortMethodChanged() {
 		let methodIndex = self.sortMethodMenu.indexOfSelectedItem
 		if methodIndex == 0 {
@@ -140,13 +141,6 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 			tableView.deselectAll(nil)
 		}
 		addNotificationCenterObserver(notificationName: "addRow", action: deselectAll)
-		
-		// MARK: - search hansearches
-		func searchTableView(notification: Notification) {
-			guard let searchquery = notification.userInfo?["searchQuery"] else { return }
-			print(searchquery)
-		}
-		addNotificationCenterObserver(notificationName: "search", action: searchTableView)
 	}
 	func removeRow() {
 		// remove from core data
@@ -171,7 +165,7 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 		textfield = obj.object as? NSTextField
 		if (textfield != nil) && (textfield == self.searchField) {
 			let targetQuery = textfield!.stringValue as String
-			if targetQuery == "" {
+			if targetQuery.isEmpty {
 				self.predicate = nil
 			} else {
 				self.predicate = NSPredicate(format: "snippetTrigger CONTAINS %@ OR snippetContent CONTAINS %@", targetQuery, targetQuery)
@@ -212,6 +206,14 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 	/*
 	---------------------------------
 	*/
+	func pasteSnippet() {
+		let eventSource = CGEventSource(stateID: .combinedSessionState)
+		let keydownEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: true)
+		let keyupEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: false)
+		keydownEvent!.flags = CGEventFlags.maskCommand
+		keyupEvent!.post(tap: CGEventTapLocation.cghidEventTap)
+	}
+	
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.beginUpdates()
 	}

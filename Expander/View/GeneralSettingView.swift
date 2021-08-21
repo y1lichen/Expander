@@ -8,14 +8,12 @@
 import SwiftUI
 
 struct GeneralSettingView: View {
-	@ObservedObject var model = ExpanderModel()
     var body: some View {
 		VStack {
 			Text("General")
 			// MARK: launch at login
 			// MARK: notification
 			// MARK: delay
-			Text("\(model.text)")
 		}
     }
 }

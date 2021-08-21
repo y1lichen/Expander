@@ -45,8 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	@objc func toggleExpander() {
 	}
-	
-
+	//
 	func createStatusBar() {
 		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 		self.statusbarMenu = NSMenu()
@@ -70,6 +69,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		self.createStatusBar()
 		openPreferences()
 		self.getuserPermission()
+		@ObservedObject var model = ExpanderModel()
 		UserDefaults.standard.register(defaults: [
 			"sortMethod": "snippetTrigger"
 			])

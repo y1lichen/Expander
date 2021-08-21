@@ -23,5 +23,4 @@ extension SnippetData {
 }
 
 extension SnippetData : Identifiable {
-
 }
