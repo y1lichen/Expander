@@ -7,7 +7,7 @@
 
 import AppKit
 
-class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegate, NSTextFieldDelegate {
+class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegate, NSTextFieldDelegate, NSSearchFieldDelegate {
 	//
 	var scrollView: NSScrollView!
 	var tableView: NSTableView!
@@ -38,15 +38,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		self.view.frame = CGRect(origin: .zero, size: CGSize(width: 355, height: 345))
 	}
 	
-	@objc func sortMethodChanged() {
-		let methodIndex = self.sortMethodMenu.indexOfSelectedItem
-		if methodIndex == 0 {
-			// sort by trigger
-			UserDefaults.standard.setValue("snippetTrigger", forKey: "sortMethod")
-		} else {
-			// sort bt date
-			UserDefaults.standard.setValue("date", forKey: "sortMethod")
-		}
+	func resetDataController() {
 		self.dataController = setController()
 		do {
 			try self.dataController.performFetch()
@@ -56,10 +48,29 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		self.tableView.reloadData()
 	}
 	
+	@objc func sortMethodChanged() {
+		let methodIndex = self.sortMethodMenu.indexOfSelectedItem
+		if methodIndex == 0 {
+			// sort by trigger
+			UserDefaults.standard.setValue("snippetTrigger", forKey: "sortMethod")
+		} else {
+			// sort bt date
+			UserDefaults.standard.setValue("date", forKey: "sortMethod")
+		}
+		resetDataController()
+	}
+	
 	// MARK: - sort method changed handling
 	func addSortMethodChangingMenu() {
+		let label = NSTextField()
+		label.isEditable = false
+		label.isSelectable = false
+		label.isBezeled = false
+		label.stringValue = "sort by"
+		label.frame = CGRect(x: 10, y: 350, width: 40, height: 20)
+		label.sizeToFit()
 		let sortMethod =  UserDefaults.standard.string(forKey: "sortMethod")
-		sortMethodMenu = NSPopUpButton(frame: CGRect(x: 10, y: 345, width: 120, height: 20))
+		sortMethodMenu = NSPopUpButton(frame: CGRect(x: 60, y: 345, width: 100, height: 20))
 		sortMethodMenu.target = self
 		sortMethodMenu.action = #selector(self.sortMethodChanged)
 		if sortMethod == "trigger" {
@@ -69,12 +80,14 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		}
 		sortMethodMenu.addItem(withTitle: "trigger")
 		sortMethodMenu.addItem(withTitle: "date")
+		self.view.addSubview(label)
 		self.view.addSubview(sortMethodMenu)
 	}
 	
-	// MARK: - searching
+	// MARK: - add searchfield
 	func addSearchField() {
-		searchField = NSSearchField(frame: CGRect(x: 180, y: 345, width: 175, height: 20))
+		searchField = NSSearchField(frame: CGRect(x: 180, y: 345, width: 170, height: 20))
+		searchField.delegate = self
 		self.view.addSubview(searchField)
 	}
 	
@@ -151,9 +164,28 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 }
 
 extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSControlTextEditingDelegate {
-	// MARK: - delete handling
+	
+	func controlTextDidChange(_ obj: Notification) {
+		// MARK: - search handling
+		var textfield: NSTextField?
+		textfield = obj.object as? NSTextField
+		if (textfield != nil) && (textfield == self.searchField) {
+			let targetQuery = textfield!.stringValue as String
+			if targetQuery == "" {
+				self.predicate = nil
+			} else {
+				self.predicate = NSPredicate(format: "snippetTrigger CONTAINS %@ OR snippetContent CONTAINS %@", targetQuery, targetQuery)
+			}
+			self.resetDataController()
+		}
+	}
+	
 	func controlTextDidEndEditing(_ obj: Notification) {
+		// MARK: - delete handling
 		if let textfield = obj.object as? NSTextField {
+			if textfield == self.searchField {
+				return
+			}
 			let newStr = textfield.stringValue
 			let cell = textfield.superview!
 			let row = tableView.row(for: cell)
@@ -175,13 +207,6 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 		let isNotEditing: Bool = (self.tableView.editedRow == -1)
 			if event.isDeleteKey && isNotEditing {
 				self.removeRow()
-			}
-		}
-	
-	func createDeleteKeyEventMonitor() {
-			self.deletekeyEvent = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-				self.keyDown(with: $0)
-				return $0
 			}
 		}
 	/*
