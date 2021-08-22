@@ -46,6 +46,7 @@ class ExpanderModel: ObservableObject {
 				self.text += character
 			}
 			self.checkMatch()
+			print(self.text)
 		}
 		// global event
 		NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseUp, .otherMouseDown]) { _ in
@@ -75,14 +76,16 @@ class ExpanderModel: ObservableObject {
 	}
 
 	func inputSnippet(_ snippet: Snippets) {
-	// MARK: - 1. register to clipboard
-	// MARK: - 2.delete
-	// MARK: - 3.paste
-	// MARK: - 4.register origin input to clipboard
+		// MARK: - delete
+		for _ in 1...snippet.trigger.count {
+			pressDeleteKey()
+		}
+		// MARK: - paste
+		pasteSnippet(snippet: snippet)
 	}
 	
-	//
-	func deleteUserInput() {
+	// simulating keypress
+	func pressDeleteKey() {
 		let eventSource = CGEventSource(stateID: .combinedSessionState)
 		let keydownEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x33, keyDown: true)
 		let keyupEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x33, keyDown: false)
@@ -90,11 +93,29 @@ class ExpanderModel: ObservableObject {
 		keydownEvent?.post(tap: .cghidEventTap)
 		keyupEvent?.post(tap: .cghidEventTap)
 	}
-	func pasteSnippet() {
+	func pasteSnippet(snippet: Snippets) {
+		// MARK: - save original clipboard
+		let oldClipboard = NSPasteboard.general.string(forType: .string)!
+		// MARK: - register to clipboard
+		NSPasteboard.general.declareTypes([.string], owner: nil)
+		NSPasteboard.general.setString(snippet.content, forType: .string)
+		// MARK: - paste
 		let eventSource = CGEventSource(stateID: .combinedSessionState)
+		// cmd+v down
 		let keydownEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: true)
-		let keyupEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: false)
 		keydownEvent!.flags = CGEventFlags.maskCommand
-		keyupEvent!.post(tap: CGEventTapLocation.cghidEventTap)
+		// cmd+v up
+		let keyupEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: false)
+		let pasteSerialQueue = DispatchQueue(label: "pastesnippet.serial.queue")
+		pasteSerialQueue.async {
+			keydownEvent?.post(tap: CGEventTapLocation.cghidEventTap)
+		}
+		pasteSerialQueue.async {
+			keyupEvent?.post(tap: CGEventTapLocation.cghidEventTap)
+		}
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+			NSPasteboard.general.setString(oldClipboard, forType: .string)
+			self.text = ""
+		}
 	}
 }

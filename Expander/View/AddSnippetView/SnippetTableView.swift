@@ -206,14 +206,6 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 	/*
 	---------------------------------
 	*/
-	func pasteSnippet() {
-		let eventSource = CGEventSource(stateID: .combinedSessionState)
-		let keydownEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: true)
-		let keyupEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x09, keyDown: false)
-		keydownEvent!.flags = CGEventFlags.maskCommand
-		keyupEvent!.post(tap: CGEventTapLocation.cghidEventTap)
-	}
-	
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.beginUpdates()
 	}

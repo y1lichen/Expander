@@ -11,9 +11,9 @@ struct GeneralSettingView: View {
     var body: some View {
 		VStack {
 			Text("General")
+			Spacer()
 			// MARK: launch at login
 			// MARK: notification
-			// MARK: delay
 		}
     }
 }
