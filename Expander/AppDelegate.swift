@@ -16,6 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	var window: NSWindow!
 	var statusbarItem: NSStatusItem!
 	var statusbarMenu: NSMenu!
+	var model: ExpanderModel!
 	/*
 	## get user permisission
 	- https://developer.apple.com/forums/thread/24288
@@ -42,8 +43,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.makeKeyAndOrderFront(nil)
 		window.isReleasedWhenClosed = false
 	}
-
+	var isOn: Bool = true
 	@objc func toggleExpander() {
+		self.isOn.toggle()
+		NotificationCenter.default.post(name: NSNotification.Name("isOnChanged"), object: nil)
 	}
 	//
 	func createStatusBar() {
@@ -62,14 +65,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		self.statusbarMenu.addItem(withTitle: "Quit Expander",
 							action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
 	}
-
+	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
 		self.createStatusBar()
-		openPreferences()
+		self.openPreferences()
 		self.getuserPermission()
-		@ObservedObject var model = ExpanderModel()
+		self.model = ExpanderModel()
 		UserDefaults.standard.register(defaults: [
 			"sortMethod": "snippetTrigger"
 			])

@@ -16,12 +16,13 @@ extension NSEvent {
 	}
 }
 
-class ExpanderModel: ObservableObject {
-	@Published var text = ""
+class ExpanderModel {
+	var text = ""
 	//
+	let appdelegate = NSApplication.shared.delegate as! AppDelegate
+	lazy var context = appdelegate.persistentContainer.viewContext
 	let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SnippetData")
 	func fetchSnippetList() -> [Snippets] {
-		let context = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let managedObject = try! context.fetch(request) as! [SnippetData]
 		let snippetList = managedObject.map {
 			Snippets.init(data: $0)
@@ -31,22 +32,35 @@ class ExpanderModel: ObservableObject {
 	//
 	let defaultSnippetList: [Snippets] = Snippets.defaults
 	lazy var snippetList: [Snippets] = fetchSnippetList()
+	// reload core data
+	@objc func managedObjectContextWillSave() {
+		self.snippetList = fetchSnippetList()
+	}
 	//
 	init() {
+		NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: self.context)
+		// MARK: - MAIN
 		NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
-			guard let character = event.characters else { return }
-			// if character is nil, the following won't be execute
-			let keycode = event.keyCode
-			// print(character, keycode)
-			if keycode > 95 {
-				self.text = ""
-			} else if event.isDeleteKey && self.text != "" {
-				self.text.removeLast()
-			} else {
-				self.text += character
+			
+			if event.modifierFlags.contains([.command, .shift]) && event.keyCode == 14 {
+				self.appdelegate.toggleExpander()
+				return
 			}
-			self.checkMatch()
-			print(self.text)
+			
+			if self.appdelegate.isOn {
+				guard let character = event.characters else { return }
+				// if character is nil, the following won't be execute
+				let keycode = event.keyCode
+				// print(character, keycode)
+				if keycode > 95 {
+					self.text = ""
+				} else if event.isDeleteKey && self.text != "" {
+					self.text.removeLast()
+				} else {
+					self.text += character
+				}
+				self.checkMatch()
+			}
 		}
 		// global event
 		NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseUp, .otherMouseDown]) { _ in
@@ -98,6 +112,7 @@ class ExpanderModel: ObservableObject {
 		let oldClipboard = NSPasteboard.general.string(forType: .string)!
 		// MARK: - register to clipboard
 		NSPasteboard.general.declareTypes([.string], owner: nil)
+		NSPasteboard.general.clearContents()
 		NSPasteboard.general.setString(snippet.content, forType: .string)
 		// MARK: - paste
 		let eventSource = CGEventSource(stateID: .combinedSessionState)
@@ -114,6 +129,7 @@ class ExpanderModel: ObservableObject {
 			keyupEvent?.post(tap: CGEventTapLocation.cghidEventTap)
 		}
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+			NSPasteboard.general.clearContents()
 			NSPasteboard.general.setString(oldClipboard, forType: .string)
 			self.text = ""
 		}

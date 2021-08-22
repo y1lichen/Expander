@@ -141,6 +141,8 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 			tableView.deselectAll(nil)
 		}
 		addNotificationCenterObserver(notificationName: "addRow", action: deselectAll)
+		
+		//
 	}
 	func removeRow() {
 		// remove from core data

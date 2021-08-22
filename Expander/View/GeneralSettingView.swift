@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct GeneralSettingView: View {
+	@EnvironmentObject var appData: AppData
     var body: some View {
 		VStack {
-			Text("General")
 			Spacer()
 			// MARK: launch at login
 			// MARK: notification
-		}
+			Spacer()
+		}.padding(20)
     }
 }
 
