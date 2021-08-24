@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 import IOKit
 
-
 extension NSEvent {
 	var isDeleteKey: Bool {
 		self.keyCode == 51
@@ -95,8 +94,10 @@ class ExpanderModel {
 					self.text += character
 				}
 				self.checkMatch()
+				self.handleGetIP(str: self.text)
 			}
 		}
+	
 		// global event
 		NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown, .directTouch]) { _ in
 			self.text = ""
@@ -130,7 +131,7 @@ class ExpanderModel {
 			pressDeleteKey()
 		}
 		// MARK: - paste
-		pasteSnippet(snippet: snippet)
+		pasteSnippet(inputContent: snippet.content)
 	}
 	
 	// simulating keypress
@@ -141,13 +142,13 @@ class ExpanderModel {
 		keydownEvent?.post(tap: .cghidEventTap)
 		keyupEvent?.post(tap: .cghidEventTap)
 	}
-	func pasteSnippet(snippet: Snippets) {
+	func pasteSnippet(inputContent: String) {
 		// MARK: - save original clipboard
 		let oldClipboard = NSPasteboard.general.string(forType: .string)!
 		// MARK: - register to clipboard
 		NSPasteboard.general.declareTypes([.string], owner: nil)
 		NSPasteboard.general.clearContents()
-		NSPasteboard.general.setString(snippet.content, forType: .string)
+		NSPasteboard.general.setString(inputContent, forType: .string)
 		// MARK: - paste
 		let eventSource = CGEventSource(stateID: .combinedSessionState)
 		// cmd+v down
@@ -162,10 +163,42 @@ class ExpanderModel {
 		pasteSerialQueue.async {
 			keyupEvent?.post(tap: CGEventTapLocation.cghidEventTap)
 		}
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
 			NSPasteboard.general.clearContents()
 			NSPasteboard.general.setString(oldClipboard, forType: .string)
 			self.text = ""
+		}
+	}
+	func ipMatch(inputString: String, targetString: String) -> Bool {
+		let matchTrigger = inputString.hasSuffix(targetString)
+		let isFullWord = (inputString.dropLast(targetString.count).last ?? " ").isWhitespace
+		return matchTrigger && isFullWord
+	}
+	func handleGetIP(str: String) {
+		if ipMatch(inputString: str, targetString: "\\ip") {
+			let address = try? String(contentsOf: URL(string: "https://api.ipify.org")!, encoding: .utf8)
+			for _ in 0...2 {
+				self.pressDeleteKey()
+			}
+			self.pasteSnippet(inputContent: address ?? "Cannot get your public ip")
+		} else if ipMatch(inputString: str, targetString: "\\lip") {
+			let address: String! = {
+				let process = Process()
+				process.launchPath = "/usr/sbin/ipconfig"
+				process.arguments = ["getifaddr", "en0"]
+
+				let pipe = Pipe()
+				process.standardOutput = pipe
+				process.standardError = pipe
+				process.launch()
+
+				let data = pipe.fileHandleForReading.readDataToEndOfFile()
+				return String(data: data, encoding: .utf8) ?? "Cannot get your private IP address"
+			}()
+			for _ in 0...3 {
+				self.pressDeleteKey()
+			}
+			self.pasteSnippet(inputContent: address)
 		}
 	}
 }
