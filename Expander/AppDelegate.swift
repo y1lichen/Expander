@@ -7,6 +7,7 @@
 
 import Cocoa
 import SwiftUI
+import UserNotifications
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -24,10 +25,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	// MARK: - remove sandbox to show notification
 	//
 	func getuserPermission() {
+		// for key press detection
 		AXIsProcessTrustedWithOptions(
 		[kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
+		// for notification
+		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { 
+		_, _ in
+	    }
 	}
-	var appData = AppData()
+	var appData: AppData!
 	
 	@objc func openPreferences() {
 		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(self.appData)
@@ -43,16 +49,45 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.makeKeyAndOrderFront(nil)
 		window.isReleasedWhenClosed = false
 	}
+	
+	//
 	var isOn: Bool = true
+	//
+	var allowNotification: Bool {
+		get {
+			UserDefaults.standard.bool(forKey: "showNotification")
+		}
+	}
+	//
 	@objc func toggleExpander() {
 		self.isOn.toggle()
-		NotificationCenter.default.post(name: NSNotification.Name("isOnChanged"), object: nil)
+		self.setStatusBarIcon()
+		if allowNotification && !self.isOn {
+			self.sendNotification()
+		}
+	}
+	
+	func createImage(imgName: String) -> NSImage {
+		let image = NSImage(named: imgName)!
+		image.isTemplate = true
+		image.size = NSSize(width: 16, height: 16)
+		return image
+	}
+	//
+	func setStatusBarIcon() {
+		let onImage = createImage(imgName: "onImage")
+		let offImage = createImage(imgName: "offImage")
+		if self.isOn {
+			self.statusbarItem.button?.image = onImage
+		} else {
+			self.statusbarItem.button?.image = offImage
+		}
 	}
 	//
 	func createStatusBar() {
 		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 		self.statusbarMenu = NSMenu()
-		self.statusbarItem.button?.title = "expander"
+		self.setStatusBarIcon()
 		self.statusbarItem.menu = self.statusbarMenu
 		let toggle = NSMenuItem()
 		toggle.title = "toggle"
@@ -66,16 +101,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 							action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
 	}
 	
+	func initData() {
+		UserDefaults.standard.register(defaults: [
+			"sortMethod": "snippetTrigger",
+			"showNotification": false,
+			"dateformat": 0
+			])
+		self.appData = AppData()
+	}
+	
+    func sendNotification() {
+       let content = UNMutableNotificationContent()
+       content.title = "Expander is disabled"
+       content.subtitle = "Press cmd+shift+e to renable Expander."
+       content.sound = UNNotificationSound.default
+       let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+       let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+		UNUserNotificationCenter.current().add(request)
+    }
+
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
+		self.initData()
 		self.createStatusBar()
 		self.openPreferences()
 		self.getuserPermission()
 		self.model = ExpanderModel()
-		UserDefaults.standard.register(defaults: [
-			"sortMethod": "snippetTrigger"
-			])
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {

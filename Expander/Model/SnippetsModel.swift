@@ -17,6 +17,14 @@ struct Snippets {
 		let isFullWord = (inputString.dropLast(self.trigger.count).last ?? " ").isWhitespace
 		return matchTrigger && isFullWord
 	}
+	
+	func getCurrentDate() -> String {
+		let dateFormatter : DateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "yyyy-MMM-dd"
+		let date = Date()
+		let dateString = dateFormatter.string(from: date)
+		return dateString
+	}
 }
 
 extension Snippets {
@@ -25,10 +33,3 @@ extension Snippets {
 		self.content = data.snippetContent!
 	}
 }
-
-extension Snippets {
-	static var defaults: [Snippets] = [
-	Snippets(trigger: ":date", content: "CurrentDate")
-	]
-}
-

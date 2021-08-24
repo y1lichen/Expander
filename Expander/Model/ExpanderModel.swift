@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import IOKit
 
 
 extension NSEvent {
@@ -15,6 +16,7 @@ extension NSEvent {
 		self.keyCode == 51
 	}
 }
+
 
 class ExpanderModel {
 	var text = ""
@@ -30,7 +32,41 @@ class ExpanderModel {
 		return snippetList
 	}
 	//
-	let defaultSnippetList: [Snippets] = Snippets.defaults
+	
+	var defaultSnippetList: [Snippets] {
+		get {
+			var dateformat: Int {
+				get {
+					return UserDefaults.standard.integer(forKey: "dateformat")
+				}
+			}
+			return [
+				Snippets(trigger: "\\date", content: {
+					let dateFormatter : DateFormatter = DateFormatter()
+					if dateformat == 0 {
+						dateFormatter.dateFormat = "yyyy/MM/dd"
+					} else {
+						dateFormatter.dateFormat = "MM/dd/yyyy"
+					}
+					let date = Date()
+					let dateString = dateFormatter.string(from: date)
+					return dateString
+				}()),
+				Snippets(trigger: "timestp", content: {
+					let dateFormatter : DateFormatter = DateFormatter()
+					if dateformat == 0 {
+						dateFormatter.dateFormat = "yyyy-dd-MM HH:mm:ss"
+					} else {
+						dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
+					}
+					let date = Date()
+					let timeString = dateFormatter.string(from: date)
+					return timeString
+				}())
+			]
+		}
+	}
+	//
 	lazy var snippetList: [Snippets] = fetchSnippetList()
 	// reload core data
 	@objc func managedObjectContextWillSave() {
@@ -40,13 +76,12 @@ class ExpanderModel {
 	init() {
 		NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: self.context)
 		// MARK: - MAIN
-		NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
+		NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { (event) in
 			
 			if event.modifierFlags.contains([.command, .shift]) && event.keyCode == 14 {
 				self.appdelegate.toggleExpander()
 				return
 			}
-			
 			if self.appdelegate.isOn {
 				guard let character = event.characters else { return }
 				// if character is nil, the following won't be execute
@@ -63,11 +98,11 @@ class ExpanderModel {
 			}
 		}
 		// global event
-		NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseUp, .otherMouseDown]) { _ in
+		NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown, .directTouch]) { _ in
 			self.text = ""
 		}
 		// in-app event
-		NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]) { event in
+		NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown, .directTouch]) { event in
 			self.text = ""
 			return event
 		}
@@ -91,7 +126,7 @@ class ExpanderModel {
 
 	func inputSnippet(_ snippet: Snippets) {
 		// MARK: - delete
-		for _ in 1...snippet.trigger.count {
+		for _ in snippet.trigger {
 			pressDeleteKey()
 		}
 		// MARK: - paste
@@ -103,7 +138,6 @@ class ExpanderModel {
 		let eventSource = CGEventSource(stateID: .combinedSessionState)
 		let keydownEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x33, keyDown: true)
 		let keyupEvent = CGEvent(keyboardEventSource: eventSource, virtualKey: 0x33, keyDown: false)
-
 		keydownEvent?.post(tap: .cghidEventTap)
 		keyupEvent?.post(tap: .cghidEventTap)
 	}
@@ -135,3 +169,6 @@ class ExpanderModel {
 		}
 	}
 }
+
+/*
+*/

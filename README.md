@@ -27,7 +27,7 @@
 #### others
 
 - [x] reload data when core data changed
-- [ ] temporarily disable expander
+- [x] temporarily disable expander
 - [ ] notification for toggling
 - [ ] save original user input
 
