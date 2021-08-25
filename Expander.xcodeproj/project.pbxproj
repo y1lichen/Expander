@@ -22,6 +22,9 @@
 		D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623626BFAD3C00E4A419 /* ToolBar.swift */; };
 		D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */; };
 		D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */; };
+		D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEB26D5603900E75825 /* SnippetView.swift */; };
+		D4D9EDEE26D5614800E75825 /* DefaultSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */; };
+		D4D9EDF026D5621C00E75825 /* DefaultSnippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +46,9 @@
 		D48A623626BFAD3C00E4A419 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 		D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D4D9EDEB26D5603900E75825 /* SnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetView.swift; sourceTree = "<group>"; };
+		D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetsView.swift; sourceTree = "<group>"; };
+		D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +67,8 @@
 			children = (
 				D4567AD326CCFCC50007224E /* SnippetTableView.swift */,
 				D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */,
+				D4D9EDEB26D5603900E75825 /* SnippetView.swift */,
+				D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */,
 			);
 			path = AddSnippetView;
 			sourceTree = "<group>";
@@ -86,6 +94,7 @@
 		D48A621726BFAC1300E4A419 /* Expander */ = {
 			isa = PBXGroup;
 			children = (
+				D4D9EDF126D5622400E75825 /* Snippets */,
 				D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */,
 				D48A622F26BFACB100E4A419 /* Model */,
 				D48A622E26BFACA400E4A419 /* View */,
@@ -122,10 +131,18 @@
 			isa = PBXGroup;
 			children = (
 				D48A623226BFAD0200E4A419 /* ExpanderModel.swift */,
-				D48A623426BFAD2400E4A419 /* SnippetsModel.swift */,
 				D4051D8A26C0C0890067B966 /* AppData.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D4D9EDF126D5622400E75825 /* Snippets */ = {
+			isa = PBXGroup;
+			children = (
+				D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */,
+				D48A623426BFAD2400E4A419 /* SnippetsModel.swift */,
+			);
+			path = Snippets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -204,10 +221,13 @@
 				D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */,
 				D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */,
 				D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */,
+				D4D9EDEE26D5614800E75825 /* DefaultSnippetsView.swift in Sources */,
 				D4051D8B26C0C0890067B966 /* AppData.swift in Sources */,
+				D4D9EDF026D5621C00E75825 /* DefaultSnippets.swift in Sources */,
 				D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */,
 				D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */,
 				D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */,
+				D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */,
 				D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */,
 				D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */,
 			);

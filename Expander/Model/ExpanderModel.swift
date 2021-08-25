@@ -5,7 +5,6 @@
 //  Created by 陳奕利 on 2021/8/8.
 //
 
-
 import Foundation
 import SwiftUI
 import IOKit
@@ -31,7 +30,8 @@ class ExpanderModel {
 		return snippetList
 	}
 	//
-	
+	let emojiList: [Snippets] = Snippets.emoji
+	//
 	var defaultSnippetList: [Snippets] {
 		get {
 			var dateformat: Int {
@@ -51,7 +51,7 @@ class ExpanderModel {
 					let dateString = dateFormatter.string(from: date)
 					return dateString
 				}()),
-				Snippets(trigger: "timestp", content: {
+				Snippets(trigger: "\\timestp", content: {
 					let dateFormatter : DateFormatter = DateFormatter()
 					if dateformat == 0 {
 						dateFormatter.dateFormat = "yyyy-dd-MM HH:mm:ss"
@@ -119,6 +119,12 @@ class ExpanderModel {
 		}
 		// user's snippets
 		if let match = snippetList.first(where: {
+			$0.isMatch(self.text)
+		}) {
+			inputSnippet(match)
+		}
+		// emoji
+		if let match = emojiList.first(where: {
 			$0.isMatch(self.text)
 		}) {
 			inputSnippet(match)

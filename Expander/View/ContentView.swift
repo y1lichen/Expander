@@ -14,7 +14,7 @@ struct ContentView: View {
 			if self.appData.preferencesView == 0 {
 				GeneralSettingView()
 			} else {
-				AddSnippetsView()
+				SnippetView()
 			}
 		}.frame(width: 400, height: 430, alignment: .center)
 	}
