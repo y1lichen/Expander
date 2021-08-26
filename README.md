@@ -16,20 +16,29 @@
 - [x] edit
 - [x] delete by pressing delete-key when tableview selection is available
 - [x] change sort method
-- [x] search snippet
+- [x] search snippets
+- [x] passive mode
+
+#### default snippets
+
+- [x] date snippet
+- [x] timestamp snippet
+- [x] public IP snippet
+- [x] private (local) IP snippet
 
 #### UI design
 
 - [x] toolbar that supports system under Big Sur (macos 11.0+)
 - [x] statusbar menu
-- [ ] dynamic statusbar icon
+- [x] dynamic statusbar icon
+- [x] hide dock icon
 
 #### others
 
 - [x] reload data when core data changed
 - [x] temporarily disable expander
-- [ ] notification for toggling
-- [ ] save original user input
+- [x] notification for toggling
+- [x] optional expand-key for passive mode
 
 ---
 

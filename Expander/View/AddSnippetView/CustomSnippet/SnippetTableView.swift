@@ -87,7 +87,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 
 	// MARK: - add searchfield
 	func addSearchField() {
-		searchField = NSSearchField(frame: CGRect(x: 180, y: 345, width: 170, height: 20))
+		searchField = NSSearchField(frame: CGRect(x: 180, y: 315, width: 170, height: 20))
 		searchField.delegate = self
 		self.view.addSubview(searchField)
 	}

@@ -39,7 +39,7 @@ struct appSettings {
 		self.showNotification = UserDefaults.standard.bool(forKey: "showNotification")
 		self.dateformat = UserDefaults.standard.integer(forKey: "dateformat")
 		self.isPassive = UserDefaults.standard.bool(forKey: "passiveMode")
-		self.expandKey = UserDefaults.standard.string(forKey: "passiveExpandKey") ?? ","
+		self.expandKey = UserDefaults.standard.string(forKey: "passiveExpandKey") ?? "\\"
 	}
 }
 
@@ -67,10 +67,10 @@ struct GeneralSettingView: View {
 			Spacer().frame(height: 20)
 			if settings.isPassive {
 				Picker(selection: $settings.expandKey, label: Text("expanding key")) {
+					Text("\\").tag("\\").frame(width: 75)
+					Text(";").tag(";").frame(width: 75)
 					Text(",").tag(",").frame(width: 75)
 					Text(".").tag(".").frame(width: 75)
-					Text(";").tag(";").frame(width: 75)
-					Text("\\").tag("\\").frame(width: 75)
 				}.pickerStyle(RadioGroupPickerStyle())
 				Spacer().frame(height: 10)
 				Text("With passive mode, all of the snippets will be exapnded only when typing \(settings.expandKey) twice after triggers.  eg: date\(settings.expandKey)\(settings.expandKey) \n\n⚠️ All the backslash(\\) in the triggers of the default snippets will be removed.").frame(width: 280)

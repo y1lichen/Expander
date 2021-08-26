@@ -47,6 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
 		window.isReleasedWhenClosed = false
+		window.makeKey()
 	}
 	
 	//
@@ -107,7 +108,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			"sortMethod": "snippetTrigger",
 			"showNotification": false,
 			"passiveMode": false,
-			"passiveExpandKey": ",",
+			"passiveExpandKey": "\\",
 			"dateformat": 0
 			])
 		self.appData = AppData()
@@ -234,3 +235,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	    return .terminateNow
 	}
 }
+
+/*
+*/
