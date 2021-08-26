@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */; };
 		D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */; };
 		D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */; };
+		D4190ECC26D7D0F10065D2C6 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = D4190ECB26D7D0F10065D2C6 /* LaunchAtLogin */; };
 		D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4567AD326CCFCC50007224E /* SnippetTableView.swift */; };
 		D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621826BFAC1300E4A419 /* AppDelegate.swift */; };
 		D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621A26BFAC1300E4A419 /* ContentView.swift */; };
@@ -25,6 +26,7 @@
 		D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEB26D5603900E75825 /* SnippetView.swift */; };
 		D4D9EDEE26D5614800E75825 /* DefaultSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */; };
 		D4D9EDF026D5621C00E75825 /* DefaultSnippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */; };
+		D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,7 @@
 		D4D9EDEB26D5603900E75825 /* SnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetView.swift; sourceTree = "<group>"; };
 		D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetsView.swift; sourceTree = "<group>"; };
 		D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippets.swift; sourceTree = "<group>"; };
+		D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4190ECC26D7D0F10065D2C6 /* LaunchAtLogin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,10 +69,9 @@
 		D4567AD226CCFC9A0007224E /* AddSnippetView */ = {
 			isa = PBXGroup;
 			children = (
-				D4567AD326CCFCC50007224E /* SnippetTableView.swift */,
-				D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */,
+				D4DFCFAC26D61F43005A299F /* DefaultSnippet */,
+				D4DFCFAB26D61F18005A299F /* CustomSnippet */,
 				D4D9EDEB26D5603900E75825 /* SnippetView.swift */,
-				D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */,
 			);
 			path = AddSnippetView;
 			sourceTree = "<group>";
@@ -145,6 +148,24 @@
 			path = Snippets;
 			sourceTree = "<group>";
 		};
+		D4DFCFAB26D61F18005A299F /* CustomSnippet */ = {
+			isa = PBXGroup;
+			children = (
+				D4567AD326CCFCC50007224E /* SnippetTableView.swift */,
+				D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */,
+			);
+			path = CustomSnippet;
+			sourceTree = "<group>";
+		};
+		D4DFCFAC26D61F43005A299F /* DefaultSnippet */ = {
+			isa = PBXGroup;
+			children = (
+				D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */,
+				D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */,
+			);
+			path = DefaultSnippet;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -161,6 +182,9 @@
 			dependencies = (
 			);
 			name = Expander;
+			packageProductDependencies = (
+				D4190ECB26D7D0F10065D2C6 /* LaunchAtLogin */,
+			);
 			productName = Expander;
 			productReference = D48A621526BFAC1300E4A419 /* Expander.app */;
 			productType = "com.apple.product-type.application";
@@ -188,6 +212,9 @@
 				Base,
 			);
 			mainGroup = D48A620C26BFAC1300E4A419;
+			packageReferences = (
+				D4190ECA26D7D0F10065D2C6 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
+			);
 			productRefGroup = D48A621626BFAC1300E4A419 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -218,6 +245,7 @@
 				D48A623326BFAD0200E4A419 /* ExpanderModel.swift in Sources */,
 				D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */,
 				D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */,
+				D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */,
 				D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */,
 				D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */,
 				D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */,
@@ -432,6 +460,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D4190ECA26D7D0F10065D2C6 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D4190ECB26D7D0F10065D2C6 /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4190ECA26D7D0F10065D2C6 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
+			productName = LaunchAtLogin;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */ = {

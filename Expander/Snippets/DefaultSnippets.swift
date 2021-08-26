@@ -15,14 +15,23 @@ extension Snippets {
 		Snippets(trigger: "\\crush", content: "😍"),
 		Snippets(trigger: "\\rangry", content: "😡"),
 		Snippets(trigger: "\\angry", content: "😤"),
-		Snippets(trigger: "\\umm", content: "🤔"),
-		Snippets(trigger: "\\emb", content: "😅"),
+		Snippets(trigger: "\\think", content: "🤔"),
+		Snippets(trigger: "\\sorry", content: "😅"),
+		Snippets(trigger: "\\flush", content: "😳"),
+		Snippets(trigger: "\\zipmouth", content: "🤐"),
+		Snippets(trigger: "\\sleep", content: "😴"),
+		Snippets(trigger: "\\sleepy", content: "😪"),
+		Snippets(trigger: "\\unamused", content: "😒"),
 		Snippets(trigger: "\\smile", content: "😄"),
-		Snippets(trigger: "\\sorry", content: "😉"),
+		Snippets(trigger: "\\wink", content: "😉"),
 		Snippets(trigger: "\\cool", content: "😎"),
 		Snippets(trigger: "\\evil", content: "😈"),
 		Snippets(trigger: "\\good", content: "👍"),
 		Snippets(trigger: "\\bad", content: "👎"),
-		Snippets(trigger: "\\midfin", content: "🖕")
+		Snippets(trigger: "\\midfin", content: "🖕"),
+		Snippets(trigger: "\\sad", content: "🥲"),
+		Snippets(trigger: "\\fear", content: "😱"),
+		Snippets(trigger: "\\kiss", content: "😗"),
+		Snippets(trigger: "\\yummy", content: "😋")
 	]
 }

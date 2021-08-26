@@ -11,7 +11,6 @@ import UserNotifications
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-
 	//var window: NSWindow?
 	// status bar
 	var window: NSWindow!
@@ -25,7 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	// MARK: - remove sandbox to show notification
 	//
 	func getuserPermission() {
-		// for key press detection
+		// for key-press detection
 		AXIsProcessTrustedWithOptions(
 		[kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
 		// for notification
@@ -53,16 +52,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	//
 	var isOn: Bool = true
 	//
+	let userDefaults = UserDefaults.standard
+	//
 	var allowNotification: Bool {
 		get {
-			UserDefaults.standard.bool(forKey: "showNotification")
+			userDefaults.bool(forKey: "showNotification")
 		}
 	}
 	//
 	@objc func toggleExpander() {
 		self.isOn.toggle()
 		self.setStatusBarIcon()
-		if allowNotification && !self.isOn {
+		if self.allowNotification && !self.isOn {
 			self.sendNotification()
 		}
 	}
@@ -102,14 +103,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	func initData() {
-		UserDefaults.standard.register(defaults: [
+		userDefaults.register(defaults: [
 			"sortMethod": "snippetTrigger",
 			"showNotification": false,
+			"passiveMode": false,
+			"passiveExpandKey": ",",
 			"dateformat": 0
 			])
 		self.appData = AppData()
 	}
-	
+	//
     func sendNotification() {
        let content = UNMutableNotificationContent()
        content.title = "Expander is disabled"
@@ -230,6 +233,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	    // If we got here, it is time to quit.
 	    return .terminateNow
 	}
-
 }
-

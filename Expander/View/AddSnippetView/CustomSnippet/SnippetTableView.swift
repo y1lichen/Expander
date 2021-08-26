@@ -18,7 +18,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 	var predicate: NSPredicate? = nil
 	// MARK: - core data
 	let viewContext = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-	
+
 	func setController() -> NSFetchedResultsController<SnippetData> {
 		let sortMethod =  UserDefaults.standard.string(forKey: "sortMethod")
 		let request = NSFetchRequest<SnippetData>(entityName: "SnippetData")
@@ -28,16 +28,16 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		dataController.delegate = self
 		return dataController
 	}
-	
+
 	lazy var dataController: NSFetchedResultsController<SnippetData> = {
 		return setController()
 	}()
-	
+
 	override func loadView() {
 		self.view = NSView()
 		self.view.frame = CGRect(origin: .zero, size: CGSize(width: 355, height: 345))
 	}
-	
+
 	func resetDataController() {
 		self.dataController = setController()
 		do {
@@ -47,8 +47,8 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		}
 		self.tableView.reloadData()
 	}
-	
-	
+
+
 	@objc func sortMethodChanged() {
 		let methodIndex = self.sortMethodMenu.indexOfSelectedItem
 		if methodIndex == 0 {
@@ -60,7 +60,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		}
 		resetDataController()
 	}
-	
+
 	// MARK: - sort method changed handling
 	func addSortMethodChangingMenu() {
 		let label = NSTextField()
@@ -71,7 +71,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		label.frame = CGRect(x: 10, y: 350, width: 40, height: 20)
 		label.sizeToFit()
 		let sortMethod =  UserDefaults.standard.string(forKey: "sortMethod")
-		sortMethodMenu = NSPopUpButton(frame: CGRect(x: 60, y: 345, width: 100, height: 20))
+		sortMethodMenu = NSPopUpButton(frame: CGRect(x: 60, y: 315, width: 100, height: 20))
 		sortMethodMenu.target = self
 		sortMethodMenu.action = #selector(self.sortMethodChanged)
 		if sortMethod == "trigger" {
@@ -84,14 +84,14 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		self.view.addSubview(label)
 		self.view.addSubview(sortMethodMenu)
 	}
-	
+
 	// MARK: - add searchfield
 	func addSearchField() {
 		searchField = NSSearchField(frame: CGRect(x: 180, y: 345, width: 170, height: 20))
 		searchField.delegate = self
 		self.view.addSubview(searchField)
 	}
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		do {
@@ -103,7 +103,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		addSortMethodChangingMenu()
 		addSearchField()
 		//
-		scrollView = NSScrollView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width , height: self.view.bounds.size.width - 30))
+		scrollView = NSScrollView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width , height: self.view.bounds.size.width - 50))
 		self.view.addSubview(scrollView)
 		tableView = NSTableView(frame: CGRect(x: 0, y: 0, width: scrollView.bounds.size.width, height: scrollView.bounds.size.height))
 		tableView.delegate = self
@@ -119,29 +119,29 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		secondCol.title = "Snippet"
 		tableView.addTableColumn(secondCol)
 		scrollView.documentView = tableView
-		
+
 		func addNotificationCenterObserver(notificationName: String, action: @escaping (Notification) -> Void) {
 			NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: notificationName), object: nil, queue: nil, using: action)
 		}
-		
+
 		// MARK: - reload data
 		func reloadTable(notfification: Notification) -> Void {
 			tableView.reloadData()
 		}
 		addNotificationCenterObserver(notificationName: "reloadtable", action: reloadTable)
-		
+
 		// MARK: - delete handling
 		func deleteRow(notification: Notification) -> Void {
 			removeRow()
 		}
 		addNotificationCenterObserver(notificationName: "deleteRow", action: deleteRow)
-		
+
 		// deselect row before adding new snippet
 		func deselectAll(notification: Notification) -> Void {
 			tableView.deselectAll(nil)
 		}
 		addNotificationCenterObserver(notificationName: "addRow", action: deselectAll)
-		
+
 		//
 	}
 	func removeRow() {
@@ -160,7 +160,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 }
 
 extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSControlTextEditingDelegate {
-	
+
 	func controlTextDidChange(_ obj: Notification) {
 		// MARK: - search handling
 		var textfield: NSTextField?
@@ -175,7 +175,7 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 			self.resetDataController()
 		}
 	}
-	
+
 	func controlTextDidEndEditing(_ obj: Notification) {
 		// MARK: - delete handling
 		if let textfield = obj.object as? NSTextField {
@@ -198,7 +198,7 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 			try? viewContext.save()
 		}
 	}
-	
+
 	override func keyDown(with event: NSEvent) {
 		let isNotEditing: Bool = (self.tableView.editedRow == -1)
 			if event.isDeleteKey && isNotEditing {
@@ -211,7 +211,7 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.beginUpdates()
 	}
-	
+
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		tableView.endUpdates()
 	}
@@ -219,7 +219,7 @@ extension SnippetTableContoller: NSTableViewDelegate, NSTableViewDataSource, NSC
 	func numberOfRows(in tableView: NSTableView) -> Int {
 		return dataController.fetchedObjects?.count ?? 0
 	}
-	
+
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		let snippetItem = dataController.fetchedObjects![row]
 		let textfield: NSTextField = {

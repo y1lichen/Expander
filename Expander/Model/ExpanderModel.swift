@@ -32,16 +32,15 @@ class ExpanderModel {
 	//
 	let emojiList: [Snippets] = Snippets.emoji
 	//
+	var isPassive: Bool!
+	var expandKey: String!
+	//
 	var defaultSnippetList: [Snippets] {
 		get {
-			var dateformat: Int {
-				get {
-					return UserDefaults.standard.integer(forKey: "dateformat")
-				}
-			}
+			let dateformat: Int = UserDefaults.standard.integer(forKey: "dateformat")
 			return [
 				Snippets(trigger: "\\date", content: {
-					let dateFormatter : DateFormatter = DateFormatter()
+					let dateFormatter: DateFormatter = DateFormatter()
 					if dateformat == 0 {
 						dateFormatter.dateFormat = "yyyy/MM/dd"
 					} else {
@@ -72,11 +71,26 @@ class ExpanderModel {
 		self.snippetList = fetchSnippetList()
 	}
 	//
+	@objc func passivemodeDidChanged() {
+		self.isPassive = UserDefaults.standard.bool(forKey: "passiveMode")
+	}
+
+	@objc func passivekeyDidChanged() {
+		self.expandKey = UserDefaults.standard.string(forKey: "passiveExpandKey")
+	}
+
+	func passiveModeHandler() {
+		NotificationCenter.default.addObserver(self, selector: #selector(passivemodeDidChanged), name: NSNotification.Name("passiveModeChanged"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(passivekeyDidChanged), name: NSNotification.Name("passiveKeyChanged"), object: nil)
+	}
+	//
 	init() {
+		self.passivemodeDidChanged()
+		self.passivekeyDidChanged()
+		self.passiveModeHandler()
 		NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: self.context)
 		// MARK: - MAIN
 		NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { (event) in
-			
 			if event.modifierFlags.contains([.command, .shift]) && event.keyCode == 14 {
 				self.appdelegate.toggleExpander()
 				return
@@ -97,7 +111,7 @@ class ExpanderModel {
 				self.handleGetIP(str: self.text)
 			}
 		}
-	
+
 		// global event
 		NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown, .directTouch]) { _ in
 			self.text = ""
@@ -108,38 +122,51 @@ class ExpanderModel {
 			return event
 		}
 	}
-	
+
 	func checkMatch() {
+		let target = String(repeating: self.expandKey, count: 2)
+		if self.isPassive {
+			if self.text.suffix(2) != target {
+				return
+			} else {
+				self.text.removeLast(2)
+			}
+		}
 		// default
 		if let match = defaultSnippetList.first(where: {
 			$0.isMatch(self.text)
 		}) {
-			inputSnippet(match)
+			inputSnippet(match, isPassive: self.isPassive)
 			return
 		}
 		// user's snippets
 		if let match = snippetList.first(where: {
 			$0.isMatch(self.text)
 		}) {
-			inputSnippet(match)
+			inputSnippet(match, isPassive: self.isPassive)
+			return
 		}
 		// emoji
 		if let match = emojiList.first(where: {
 			$0.isMatch(self.text)
 		}) {
-			inputSnippet(match)
+			inputSnippet(match, isPassive: self.isPassive)
 		}
 	}
 
-	func inputSnippet(_ snippet: Snippets) {
+	func inputSnippet(_ snippet: Snippets, isPassive: Bool) {
 		// MARK: - delete
+		if isPassive {
+			pressDeleteKey()
+			pressDeleteKey()
+		}
 		for _ in snippet.trigger {
 			pressDeleteKey()
 		}
 		// MARK: - paste
 		pasteSnippet(inputContent: snippet.content)
 	}
-	
+
 	// simulating keypress
 	func pressDeleteKey() {
 		let eventSource = CGEventSource(stateID: .combinedSessionState)
@@ -181,13 +208,22 @@ class ExpanderModel {
 		return matchTrigger && isFullWord
 	}
 	func handleGetIP(str: String) {
-		if ipMatch(inputString: str, targetString: "\\ip") {
+		var ipTargetString: String
+		var lipTargetString: String
+		if isPassive {
+			ipTargetString = "ip,,"
+			lipTargetString = "lip,,"
+		} else {
+			ipTargetString = "\\ip"
+			lipTargetString = "\\lip"
+		}
+		if ipMatch(inputString: str, targetString: ipTargetString) {
 			let address = try? String(contentsOf: URL(string: "https://api.ipify.org")!, encoding: .utf8)
 			for _ in 0...2 {
 				self.pressDeleteKey()
 			}
 			self.pasteSnippet(inputContent: address ?? "Cannot get your public ip")
-		} else if ipMatch(inputString: str, targetString: "\\lip") {
+		} else if ipMatch(inputString: str, targetString: lipTargetString) {
 			let address: String! = {
 				let process = Process()
 				process.launchPath = "/usr/sbin/ipconfig"

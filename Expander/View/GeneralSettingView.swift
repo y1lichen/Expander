@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import LaunchAtLogin
+
 
 struct appSettings {
 	var showNotification: Bool {
@@ -19,9 +21,25 @@ struct appSettings {
 		}
 	}
 
+	var isPassive: Bool {
+		didSet {
+			UserDefaults.standard.setValue(self.isPassive, forKey: "passiveMode")
+			NotificationCenter.default.post(name: NSNotification.Name("passiveModeChanged"),object: nil, userInfo: nil)
+		}
+	}
+
+	var expandKey: String {
+		didSet {
+			UserDefaults.standard.setValue(self.expandKey, forKey: "passiveExpandKey")
+			NotificationCenter.default.post(name: NSNotification.Name("passiveKeyChanged"),object: nil, userInfo: nil)
+		}
+	}
+
 	init() {
 		self.showNotification = UserDefaults.standard.bool(forKey: "showNotification")
 		self.dateformat = UserDefaults.standard.integer(forKey: "dateformat")
+		self.isPassive = UserDefaults.standard.bool(forKey: "passiveMode")
+		self.expandKey = UserDefaults.standard.string(forKey: "passiveExpandKey") ?? ","
 	}
 }
 
@@ -31,15 +49,32 @@ struct GeneralSettingView: View {
 	var maxdelete = [2,3,4,5]
     var body: some View {
 		VStack (alignment: .leading){
-			Spacer()
+			Spacer().frame(height: 20)
 			// MARK: launch at login
+			LaunchAtLogin.Toggle {
+				Text("Launch at login")
+				Spacer().frame(height: 30)
+			}
 			// MARK: notification
 			Toggle("Show notification when Expander is disabled", isOn: $settings.showNotification)
-			Spacer()
+			Spacer().frame(height: 20)
 			Picker("Date format", selection: $settings.dateformat) {
 				Text("yyyy-mm-dd").tag(0)
 				Text("mm-dd-yyyy").tag(1)
 			}.frame(width: 200)
+			Spacer().frame(height: 20)
+			Toggle("Passive mode", isOn: $settings.isPassive)
+			Spacer().frame(height: 20)
+			if settings.isPassive {
+				Picker(selection: $settings.expandKey, label: Text("expanding key")) {
+					Text(",").tag(",").frame(width: 75)
+					Text(".").tag(".").frame(width: 75)
+					Text(";").tag(";").frame(width: 75)
+					Text("\\").tag("\\").frame(width: 75)
+				}.pickerStyle(RadioGroupPickerStyle())
+				Spacer().frame(height: 10)
+				Text("With passive mode, all of the snippets will be exapnded only when typing \(settings.expandKey) twice after triggers.  eg: date\(settings.expandKey)\(settings.expandKey) \n\n⚠️ All the backslash(\\) in the triggers of the default snippets will be removed.").frame(width: 280)
+			}
 			Spacer()
 		}.padding(20)
     }

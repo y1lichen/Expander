@@ -88,12 +88,12 @@ struct ListButton: View {
 }
 
 struct footerToolBarView: View {
-	
+
 	func sendNotification(notificationName: String) {
 		let nc = NotificationCenter.default
 		nc.post(name: Notification.Name(notificationName), object: nil)
 	}
-	
+
 	@Binding var isShow: Bool
 	func add() {
 		sendNotification(notificationName: "addRow")
