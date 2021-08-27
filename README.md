@@ -2,6 +2,16 @@
 
 ---
 
+### Usage showcase
+
+#### normal mode
+
+![normal mode showcase](./normal.gif)
+
+#### passive mode
+
+## ![passive mode showcase](./passive.gif)
+
 ### TODOs
 
 #### key detection
