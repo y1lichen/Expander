@@ -31,6 +31,7 @@ class ExpanderModel {
 	}
 	//
 	let emojiList: [Snippets] = Snippets.emoji
+	let passiveEmojiList: [Snippets] = Snippets.passiveEmoji
 	//
 	var isPassive: Bool!
 	var expandKey: String!
@@ -39,7 +40,13 @@ class ExpanderModel {
 		get {
 			let dateformat: Int = UserDefaults.standard.integer(forKey: "dateformat")
 			return [
-				Snippets(trigger: "\\date", content: {
+				Snippets(trigger: {
+					if self.isPassive {
+						return "date"
+					} else {
+						return "\\date"
+					}
+				}(), content: {
 					let dateFormatter: DateFormatter = DateFormatter()
 					if dateformat == 0 {
 						dateFormatter.dateFormat = "yyyy/MM/dd"
@@ -50,7 +57,13 @@ class ExpanderModel {
 					let dateString = dateFormatter.string(from: date)
 					return dateString
 				}()),
-				Snippets(trigger: "\\timestp", content: {
+				Snippets(trigger: {
+					if self.isPassive {
+						return "timestp"
+					} else {
+						return "\\timestp"
+					}
+				}(), content: {
 					let dateFormatter : DateFormatter = DateFormatter()
 					if dateformat == 0 {
 						dateFormatter.dateFormat = "yyyy-dd-MM HH:mm:ss"
@@ -122,22 +135,22 @@ class ExpanderModel {
 			return event
 		}
 	}
-
+	/*
+	*/
 	func checkMatch() {
 		let target = String(repeating: self.expandKey, count: 2)
 		if self.isPassive {
 			if self.text.suffix(2) != target {
 				return
 			} else {
-				self.text.removeLast(2)
+				self.text = String(self.text.dropLast(2))
 			}
-		}
-		// default
-		if let match = defaultSnippetList.first(where: {
-			$0.isMatch(self.text)
-		}) {
-			inputSnippet(match, isPassive: self.isPassive)
-			return
+			if let match = passiveEmojiList.first(where: {
+				$0.isMatch(self.text)
+			}) {
+				inputSnippet(match, isPassive: self.isPassive)
+				return
+			}
 		}
 		// user's snippets
 		if let match = snippetList.first(where: {
@@ -151,6 +164,14 @@ class ExpanderModel {
 			$0.isMatch(self.text)
 		}) {
 			inputSnippet(match, isPassive: self.isPassive)
+			return
+		}
+		// dafault
+		if let match = defaultSnippetList.first(where: {
+			$0.isMatch(self.text)
+		}) {
+			inputSnippet(match, isPassive: self.isPassive)
+			return
 		}
 	}
 
@@ -211,8 +232,8 @@ class ExpanderModel {
 		var ipTargetString: String
 		var lipTargetString: String
 		if isPassive {
-			ipTargetString = "ip,,"
-			lipTargetString = "lip,,"
+			ipTargetString = "ip\(self.expandKey!)\(self.expandKey!)"
+			lipTargetString = "lip\(self.expandKey!)\(self.expandKey!)"
 		} else {
 			ipTargetString = "\\ip"
 			lipTargetString = "\\lip"
