@@ -36,6 +36,55 @@ class ExpanderModel {
 	var isPassive: Bool!
 	var expandKey: String!
 	//
+	var ipSnippetsList: [Snippets] {
+		get {
+			if self.isPassive {
+				let list: [Snippets] = [
+					Snippets(trigger: "ip", content: {
+						let address = try? String(contentsOf: URL(string: "https://api.ipify.org")!, encoding: .utf8)
+						return address ?? "Cannot get your public IP address"
+					}()),
+					Snippets(trigger: "lip", content: {
+						let process = Process()
+						process.launchPath = "/usr/sbin/ipconfig"
+						process.arguments = ["getifaddr", "en0"]
+
+						let pipe = Pipe()
+						process.standardOutput = pipe
+						process.standardError = pipe
+						process.launch()
+
+						let data = pipe.fileHandleForReading.readDataToEndOfFile()
+						return String(data: data, encoding: .utf8) ?? "Cannot get your private IP address"
+					}())
+				]
+				return list
+			} else {
+				let list: [Snippets] = [
+					Snippets(trigger: "\\ip", content: {
+						let address = try? String(contentsOf: URL(string: "https://api.ipify.org")!, encoding: .utf8)
+						return address ?? "Cannot get your public IP address"
+					}()),
+					Snippets(trigger: "\\lip", content: {
+						let process = Process()
+						process.launchPath = "/usr/sbin/ipconfig"
+						process.arguments = ["getifaddr", "en0"]
+
+						let pipe = Pipe()
+						process.standardOutput = pipe
+						process.standardError = pipe
+						process.launch()
+
+						let data = pipe.fileHandleForReading.readDataToEndOfFile()
+						return String(data: data, encoding: .utf8) ?? "Cannot get your private IP address"
+					}())
+
+				]
+				return list
+			}
+		}
+	}
+	//
 	var defaultSnippetList: [Snippets] {
 		get {
 			let dateformat: Int = UserDefaults.standard.integer(forKey: "dateformat")
@@ -121,7 +170,6 @@ class ExpanderModel {
 					self.text += character
 				}
 				self.checkMatch()
-				self.handleGetIP(str: self.text)
 			}
 		}
 
@@ -168,6 +216,13 @@ class ExpanderModel {
 		}
 		// dafault
 		if let match = defaultSnippetList.first(where: {
+			$0.isMatch(self.text)
+		}) {
+			inputSnippet(match, isPassive: self.isPassive)
+			return
+		}
+		// ip
+		if let match = ipSnippetsList.first(where: {
 			$0.isMatch(self.text)
 		}) {
 			inputSnippet(match, isPassive: self.isPassive)
@@ -221,47 +276,6 @@ class ExpanderModel {
 			NSPasteboard.general.clearContents()
 			NSPasteboard.general.setString(oldClipboard, forType: .string)
 			self.text = ""
-		}
-	}
-	func ipMatch(inputString: String, targetString: String) -> Bool {
-		let matchTrigger = inputString.hasSuffix(targetString)
-		let isFullWord = (inputString.dropLast(targetString.count).last ?? " ").isWhitespace
-		return matchTrigger && isFullWord
-	}
-	func handleGetIP(str: String) {
-		var ipTargetString: String
-		var lipTargetString: String
-		if isPassive {
-			ipTargetString = "ip\(self.expandKey!)\(self.expandKey!)"
-			lipTargetString = "lip\(self.expandKey!)\(self.expandKey!)"
-		} else {
-			ipTargetString = "\\ip"
-			lipTargetString = "\\lip"
-		}
-		if ipMatch(inputString: str, targetString: ipTargetString) {
-			let address = try? String(contentsOf: URL(string: "https://api.ipify.org")!, encoding: .utf8)
-			for _ in 0...2 {
-				self.pressDeleteKey()
-			}
-			self.pasteSnippet(inputContent: address ?? "Cannot get your public ip")
-		} else if ipMatch(inputString: str, targetString: lipTargetString) {
-			let address: String! = {
-				let process = Process()
-				process.launchPath = "/usr/sbin/ipconfig"
-				process.arguments = ["getifaddr", "en0"]
-
-				let pipe = Pipe()
-				process.standardOutput = pipe
-				process.standardError = pipe
-				process.launch()
-
-				let data = pipe.fileHandleForReading.readDataToEndOfFile()
-				return String(data: data, encoding: .utf8) ?? "Cannot get your private IP address"
-			}()
-			for _ in 0...3 {
-				self.pressDeleteKey()
-			}
-			self.pasteSnippet(inputContent: address)
 		}
 	}
 }
