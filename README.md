@@ -10,6 +10,10 @@
 
 #### passive mode
 
+#### extra - emoji snippets
+
+> just type \cool (normal mode) and you will get 😎
+
 ## ![passive mode showcase](./passive.gif)
 
 ### TODOs
