@@ -164,7 +164,7 @@ class ExpanderModel {
 				// print(character, keycode)
 				if keycode > 95 {
 					self.text = ""
-				} else if event.isDeleteKey && !self.text.isEmpty {
+				} else if event.isDeleteKey, !self.text.isEmpty {
 					self.text.removeLast()
 				} else {
 					self.text += character

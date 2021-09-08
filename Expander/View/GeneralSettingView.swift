@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import LaunchAtLogin
 
 
 struct appSettings {
@@ -49,12 +48,8 @@ struct GeneralSettingView: View {
 	var maxdelete = [2,3,4,5]
     var body: some View {
 		VStack (alignment: .leading){
-			Spacer().frame(height: 20)
 			// MARK: launch at login
-			LaunchAtLogin.Toggle {
-				Text("Launch at login")
-				Spacer().frame(height: 30)
-			}
+			Spacer().frame(height: 20)
 			// MARK: notification
 			Toggle("Show notification when Expander is disabled", isOn: $settings.showNotification)
 			Spacer().frame(height: 20)
@@ -64,8 +59,8 @@ struct GeneralSettingView: View {
 			}.frame(width: 200)
 			Spacer().frame(height: 20)
 			Toggle("Passive mode", isOn: $settings.isPassive)
-			Spacer().frame(height: 20)
 			if settings.isPassive {
+				Spacer().frame(height: 20)
 				Picker(selection: $settings.expandKey, label: Text("expanding key")) {
 					Text("\\").tag("\\").frame(width: 75)
 					Text(";").tag(";").frame(width: 75)
@@ -74,8 +69,9 @@ struct GeneralSettingView: View {
 				}.pickerStyle(RadioGroupPickerStyle())
 				Spacer().frame(height: 10)
 				Text("With passive mode, all of the snippets will be exapnded only when typing \(settings.expandKey) twice after triggers.  eg: date\(settings.expandKey)\(settings.expandKey) \n\n⚠️ All the backslash(\\) in the triggers of the default snippets will be removed.").frame(width: 280)
+			} else {
+				Spacer()
 			}
-			Spacer()
 		}.padding(20)
     }
 }
