@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,7 +11,6 @@
 		D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */; };
 		D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */; };
 		D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */; };
-		D4190ECC26D7D0F10065D2C6 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = D4190ECB26D7D0F10065D2C6 /* LaunchAtLogin */; };
 		D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4567AD326CCFCC50007224E /* SnippetTableView.swift */; };
 		D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621826BFAC1300E4A419 /* AppDelegate.swift */; };
 		D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621A26BFAC1300E4A419 /* ContentView.swift */; };
@@ -21,6 +20,7 @@
 		D48A623326BFAD0200E4A419 /* ExpanderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623226BFAD0200E4A419 /* ExpanderModel.swift */; };
 		D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623426BFAD2400E4A419 /* SnippetsModel.swift */; };
 		D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623626BFAD3C00E4A419 /* ToolBar.swift */; };
+		D4B0DE0C26FB52AD0026FDEC /* GetIPaddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0DE0B26FB52AD0026FDEC /* GetIPaddress.swift */; };
 		D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */; };
 		D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */; };
 		D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEB26D5603900E75825 /* SnippetView.swift */; };
@@ -46,6 +46,7 @@
 		D48A623226BFAD0200E4A419 /* ExpanderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpanderModel.swift; sourceTree = "<group>"; };
 		D48A623426BFAD2400E4A419 /* SnippetsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsModel.swift; sourceTree = "<group>"; };
 		D48A623626BFAD3C00E4A419 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
+		D4B0DE0B26FB52AD0026FDEC /* GetIPaddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetIPaddress.swift; sourceTree = "<group>"; };
 		D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D4D9EDEB26D5603900E75825 /* SnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetView.swift; sourceTree = "<group>"; };
@@ -59,7 +60,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4190ECC26D7D0F10065D2C6 /* LaunchAtLogin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +97,7 @@
 		D48A621726BFAC1300E4A419 /* Expander */ = {
 			isa = PBXGroup;
 			children = (
+				D4B0DE0A26FB523F0026FDEC /* Util */,
 				D4D9EDF126D5622400E75825 /* Snippets */,
 				D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */,
 				D48A622F26BFACB100E4A419 /* Model */,
@@ -137,6 +138,14 @@
 				D4051D8A26C0C0890067B966 /* AppData.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D4B0DE0A26FB523F0026FDEC /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				D4B0DE0B26FB52AD0026FDEC /* GetIPaddress.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		D4D9EDF126D5622400E75825 /* Snippets */ = {
@@ -183,7 +192,6 @@
 			);
 			name = Expander;
 			packageProductDependencies = (
-				D4190ECB26D7D0F10065D2C6 /* LaunchAtLogin */,
 			);
 			productName = Expander;
 			productReference = D48A621526BFAC1300E4A419 /* Expander.app */;
@@ -213,7 +221,6 @@
 			);
 			mainGroup = D48A620C26BFAC1300E4A419;
 			packageReferences = (
-				D4190ECA26D7D0F10065D2C6 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
 			);
 			productRefGroup = D48A621626BFAC1300E4A419 /* Products */;
 			projectDirPath = "";
@@ -243,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D48A623326BFAD0200E4A419 /* ExpanderModel.swift in Sources */,
+				D4B0DE0C26FB52AD0026FDEC /* GetIPaddress.swift in Sources */,
 				D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */,
 				D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */,
 				D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */,
@@ -408,7 +416,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "jefferson-tw.Expander";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -433,7 +441,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "jefferson-tw.Expander";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -462,25 +470,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		D4190ECA26D7D0F10065D2C6 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.1.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D4190ECB26D7D0F10065D2C6 /* LaunchAtLogin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D4190ECA26D7D0F10065D2C6 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
-			productName = LaunchAtLogin;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */ = {

@@ -46,9 +46,16 @@ struct GeneralSettingView: View {
 	@EnvironmentObject var appData: AppData
 	@State var settings = appSettings()
 	var maxdelete = [2,3,4,5]
+	func reloadIP() {
+		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadipdata"), object: self)
+	}
     var body: some View {
 		VStack (alignment: .leading){
-			// MARK: launch at login
+			Spacer().frame(height: 10)
+			//
+			Button(action: reloadIP) {
+				Text("reload IP adress")
+			}
 			Spacer().frame(height: 20)
 			// MARK: notification
 			Toggle("Show notification when Expander is disabled", isOn: $settings.showNotification)

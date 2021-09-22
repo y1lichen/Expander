@@ -35,50 +35,21 @@ class ExpanderModel {
 	//
 	var isPassive: Bool!
 	var expandKey: String!
+	// IP data
+	@ObservedObject var ipdata = IPAdress()
 	//
 	var ipSnippetsList: [Snippets] {
 		get {
 			if self.isPassive {
 				let list: [Snippets] = [
-					Snippets(trigger: "ip", content: {
-						let address = try? String(contentsOf: URL(string: "https://api.ipify.org")!, encoding: .utf8)
-						return address ?? "Cannot get your public IP address"
-					}()),
-					Snippets(trigger: "lip", content: {
-						let process = Process()
-						process.launchPath = "/usr/sbin/ipconfig"
-						process.arguments = ["getifaddr", "en0"]
-
-						let pipe = Pipe()
-						process.standardOutput = pipe
-						process.standardError = pipe
-						process.launch()
-
-						let data = pipe.fileHandleForReading.readDataToEndOfFile()
-						return String(data: data, encoding: .utf8) ?? "Cannot get your private IP address"
-					}())
+					Snippets(trigger: "ip", content: ipdata.externalIP),
+					Snippets(trigger: "lip", content: ipdata.internalIP)
 				]
 				return list
 			} else {
 				let list: [Snippets] = [
-					Snippets(trigger: "\\ip", content: {
-						let address = try? String(contentsOf: URL(string: "https://api.ipify.org")!, encoding: .utf8)
-						return address ?? "Cannot get your public IP address"
-					}()),
-					Snippets(trigger: "\\lip", content: {
-						let process = Process()
-						process.launchPath = "/usr/sbin/ipconfig"
-						process.arguments = ["getifaddr", "en0"]
-
-						let pipe = Pipe()
-						process.standardOutput = pipe
-						process.standardError = pipe
-						process.launch()
-
-						let data = pipe.fileHandleForReading.readDataToEndOfFile()
-						return String(data: data, encoding: .utf8) ?? "Cannot get your private IP address"
-					}())
-
+					Snippets(trigger: "\\ip", content: ipdata.externalIP),
+					Snippets(trigger: "\\lip", content: ipdata.internalIP)
 				]
 				return list
 			}
@@ -140,7 +111,10 @@ class ExpanderModel {
 	@objc func passivekeyDidChanged() {
 		self.expandKey = UserDefaults.standard.string(forKey: "passiveExpandKey")
 	}
-
+	//
+	@objc func reloadIPdata() {
+		self.ipdata.updateIP()
+	}
 	func passiveModeHandler() {
 		NotificationCenter.default.addObserver(self, selector: #selector(passivemodeDidChanged), name: NSNotification.Name("passiveModeChanged"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(passivekeyDidChanged), name: NSNotification.Name("passiveKeyChanged"), object: nil)
@@ -151,6 +125,7 @@ class ExpanderModel {
 		self.passivekeyDidChanged()
 		self.passiveModeHandler()
 		NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: self.context)
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadIPdata), name: NSNotification.Name(rawValue: "loadipdata"), object: nil)
 		// MARK: - MAIN
 		NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { (event) in
 			if event.modifierFlags.contains([.command, .shift]) && event.keyCode == 14 {
@@ -253,7 +228,7 @@ class ExpanderModel {
 	}
 	func pasteSnippet(inputContent: String) {
 		// MARK: - save original clipboard
-		let oldClipboard = NSPasteboard.general.string(forType: .string)!
+		let oldClipboard = NSPasteboard.general.string(forType: .string) ?? ""
 		// MARK: - register to clipboard
 		NSPasteboard.general.declareTypes([.string], owner: nil)
 		NSPasteboard.general.clearContents()
@@ -272,7 +247,7 @@ class ExpanderModel {
 		pasteSerialQueue.async {
 			keyupEvent?.post(tap: CGEventTapLocation.cghidEventTap)
 		}
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
 			NSPasteboard.general.clearContents()
 			NSPasteboard.general.setString(oldClipboard, forType: .string)
 			self.text = ""

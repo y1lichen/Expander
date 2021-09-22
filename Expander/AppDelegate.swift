@@ -17,6 +17,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	var statusbarItem: NSStatusItem!
 	var statusbarMenu: NSMenu!
 	var model: ExpanderModel!
+	// timer for reload ipdate
+	var timer: DispatchSourceTimer?
 	/*
 	## get user permisission
 	- https://developer.apple.com/forums/thread/24288
@@ -123,15 +125,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 		UNUserNotificationCenter.current().add(request)
     }
-
+	//
+	func postLoadIPdataNotification() {
+		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadipdata"), object: self)
+	}
+	func loadIPdata() {
+		timer = DispatchSource.makeTimerSource()
+		timer?.schedule(deadline: .now(), repeating: DispatchTimeInterval.seconds(3600), leeway: DispatchTimeInterval.seconds(60))
+		timer?.setEventHandler(handler: postLoadIPdataNotification)
+	}
+	//
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
 		self.initData()
 		self.createStatusBar()
-		self.openPreferences()
 		self.getuserPermission()
+		self.openPreferences()
 		self.model = ExpanderModel()
+		// load ip address
+		self.loadIPdata()
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {
@@ -237,4 +250,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 /*
+ 
 */
