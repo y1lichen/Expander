@@ -127,12 +127,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 	//
 	func postLoadIPdataNotification() {
-		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadipdata"), object: self)
+		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadipdata"), object: nil)
 	}
 	func loadIPdata() {
 		timer = DispatchSource.makeTimerSource()
-		timer?.schedule(deadline: .now(), repeating: DispatchTimeInterval.seconds(3600), leeway: DispatchTimeInterval.seconds(60))
+		timer?.schedule(deadline: DispatchTime.now(), repeating: DispatchTimeInterval.seconds(3600), leeway: DispatchTimeInterval.seconds(5))
 		timer?.setEventHandler(handler: postLoadIPdataNotification)
+		// start the timer
+		timer?.resume()
 	}
 	//
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
