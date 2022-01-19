@@ -35,7 +35,7 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 
 	override func loadView() {
 		self.view = NSView()
-		self.view.frame = CGRect(origin: .zero, size: CGSize(width: 355, height: 345))
+		self.view.frame = CGRect(origin: .zero, size: CGSize(width: 355, height: 300))
 	}
 
 	func resetDataController() {
@@ -137,10 +137,10 @@ class SnippetTableContoller: NSViewController, NSFetchedResultsControllerDelegat
 		addNotificationCenterObserver(notificationName: "deleteRow", action: deleteRow)
 
 		// deselect row before adding new snippet
-		func deselectAll(notification: Notification) -> Void {
+		func unselectAll(notification: Notification) -> Void {
 			tableView.deselectAll(nil)
 		}
-		addNotificationCenterObserver(notificationName: "addRow", action: deselectAll)
+		addNotificationCenterObserver(notificationName: "addRow", action: unselectAll)
 
 		//
 	}

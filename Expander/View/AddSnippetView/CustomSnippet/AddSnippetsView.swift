@@ -14,7 +14,10 @@ struct AddSnippetsView: View {
 			Spacer().frame(height: 4)
 			SnippetTableView()
 			Spacer().frame(height: 3)
-			footerToolBarView(isShow: $showSheet)
+			HStack {
+				Spacer()
+				footerToolBarView(isShow: $showSheet)
+			}
 		}
 		.border(Color(NSColor.gridColor), width: 1.5)
 		.padding(15)
@@ -79,11 +82,10 @@ struct ListButton: View {
 	var action: () -> Void
 	var body: some View {
 		Button(action: action) {
-			Image(nsImage: NSImage(named: imageName)!)
-				.resizable()
+			Image(systemName: imageName)
+				.frame(width: 12, height: 16)
 		}
-		.buttonStyle(BorderlessButtonStyle())
-		.frame(width: 35, height: 55)
+		.buttonStyle(BorderedButtonStyle())
 	}
 }
 
@@ -104,12 +106,11 @@ struct footerToolBarView: View {
 	}
 	var body: some View {
 		HStack(spacing: 0) {
-			ListButton(imageName: NSImage.addTemplateName, action: add)
-			Divider()
-			ListButton(imageName: NSImage.removeTemplateName, action: remove)
-			Divider()
+			ListButton(imageName: "plus", action: add)
+			ListButton(imageName: "minus", action: remove)
 			Spacer()
-		}.frame(height: 20)
+		}
+		.frame(height: 25)
 	}
 }
 
