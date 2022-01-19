@@ -30,12 +30,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		AXIsProcessTrustedWithOptions(
 		[kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
 		// for notification
-		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { 
+		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
 		_, _ in
 	    }
 	}
 	var appData: AppData!
-	
+
 	@objc func openPreferences() {
 		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(self.appData)
 		// Create the window and set the content view.
@@ -51,7 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.isReleasedWhenClosed = false
 		window.makeKey()
 	}
-	
+
 	//
 	var isOn: Bool = true
 	//
@@ -62,6 +62,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			userDefaults.bool(forKey: "showNotification")
 		}
 	}
+
+	func toggleLongSnippetView() {
+	}
+
 	//
 	@objc func toggleExpander() {
 		self.isOn.toggle()
@@ -70,7 +74,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			self.sendNotification()
 		}
 	}
-	
+
 	func createImage(imgName: String) -> NSImage {
 		let image = NSImage(named: imgName)!
 		image.isTemplate = true
@@ -87,6 +91,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			self.statusbarItem.button?.image = offImage
 		}
 	}
+
 	//
 	func createStatusBar() {
 		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -104,7 +109,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		self.statusbarMenu.addItem(withTitle: "Quit Expander",
 							action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
 	}
-	
+
 	func initData() {
 		userDefaults.register(defaults: [
 			"sortMethod": "snippetTrigger",
@@ -252,5 +257,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 /*
- 
+
 */

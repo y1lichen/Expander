@@ -99,6 +99,9 @@ class ExpanderModel {
 	}
 	//
 	lazy var snippetList: [Snippets] = fetchSnippetList()
+	// TODO: - finish this function
+	func toggleLongSnippetView() {
+	}
 	// reload core data
 	@objc func managedObjectContextWillSave() {
 		self.snippetList = fetchSnippetList()
@@ -131,6 +134,8 @@ class ExpanderModel {
 			if event.modifierFlags.contains([.command, .shift]) && event.keyCode == 14 {
 				self.appdelegate.toggleExpander()
 				return
+			} else if ((event.modifierFlags.contains([.command, .shift]) && event.keyCode == 32)) {
+				self.toggleLongSnippetView()
 			}
 			if self.appdelegate.isOn {
 				guard let character = event.characters else { return }

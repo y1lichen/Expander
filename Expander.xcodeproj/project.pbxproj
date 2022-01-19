@@ -27,6 +27,7 @@
 		D4D9EDEE26D5614800E75825 /* DefaultSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */; };
 		D4D9EDF026D5621C00E75825 /* DefaultSnippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */; };
 		D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */; };
+		D4DFF5382797EDBA00B9A11B /* ToolBarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DFF5372797EDBA00B9A11B /* ToolBarItemView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetsView.swift; sourceTree = "<group>"; };
 		D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippets.swift; sourceTree = "<group>"; };
 		D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetTableView.swift; sourceTree = "<group>"; };
+		D4DFF5372797EDBA00B9A11B /* ToolBarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarItemView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				D48A623626BFAD3C00E4A419 /* ToolBar.swift */,
 				D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */,
 				D4567AD226CCFC9A0007224E /* AddSnippetView */,
+				D4DFF5372797EDBA00B9A11B /* ToolBarItemView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -204,7 +207,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					D48A621426BFAC1300E4A419 = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -266,6 +269,7 @@
 				D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */,
 				D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */,
 				D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */,
+				D4DFF5382797EDBA00B9A11B /* ToolBarItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +408,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Expander/Expander.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Expander/Preview Content\"";
@@ -415,7 +420,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "jefferson-tw.Expander";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -429,6 +434,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Expander/Expander.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Expander/Preview Content\"";
@@ -440,7 +446,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "jefferson-tw.Expander";
 				PRODUCT_NAME = "$(TARGET_NAME)";

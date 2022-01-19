@@ -34,11 +34,13 @@ extension AppDelegate: NSToolbarDelegate {
 				willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
 		switch itemIdentifier {
 		case NSToolbarItem.Identifier.general:
-			return customToolbarItem(itemIdentifier: itemIdentifier, label: "General",
-				image: NSImage(named: NSImage.preferencesGeneralName)!, action: #selector(openGeneral))
+			let button = NSButton(image: NSImage(systemSymbolName: "gearshape", accessibilityDescription: "gearshape")!, target: nil, action: #selector(openGeneral))
+			return customToolbarItem(itemIdentifier: itemIdentifier, label: "General", toolTip: "Your custom settings",
+				image: NSImage(named: NSImage.preferencesGeneralName)!, itemContent: button)
 		case NSToolbarItem.Identifier.snippets:
-			return customToolbarItem(itemIdentifier: itemIdentifier, label: "Add snippets",
-				image: NSImage(named: NSImage.addTemplateName)!, action: #selector(addSnippets))
+			let button = NSButton(image: NSImage(systemSymbolName: "doc.text", accessibilityDescription: "doc.text")!, target: nil, action: #selector(addSnippets))
+			return customToolbarItem(itemIdentifier: itemIdentifier, label: "Snippets", toolTip: "Manage your snippets",
+				image: NSImage(named: NSImage.addTemplateName)!, itemContent: button)
 		default:
 			return nil
 		}
@@ -53,13 +55,15 @@ extension AppDelegate: NSToolbarDelegate {
 	}
 
 	func customToolbarItem(itemIdentifier: NSToolbarItem.Identifier, label: String,
-							image: NSImage, action: Selector) -> NSToolbarItem? {
-		let toolbarItem = NSToolbarItem(itemIdentifier: itemIdentifier)
-		toolbarItem.label = label
-		toolbarItem.action = action
-		toolbarItem.image = image
-		toolbarItem.isEnabled = true
-		toolbarItem.target = self
-		return toolbarItem
+						   toolTip: String, image: NSImage, itemContent: NSButton) -> NSToolbarItem? {
+		let toolBarItem = NSToolbarItem(itemIdentifier: itemIdentifier)
+		toolBarItem.label = label
+		toolBarItem.view = itemContent
+		toolBarItem.toolTip = toolTip
+		let menuItem = NSMenuItem()
+		menuItem.submenu = nil
+		menuItem.title = label
+		toolBarItem.menuFormRepresentation = menuItem
+		return toolBarItem
 	}
 }

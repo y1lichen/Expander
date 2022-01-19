@@ -16,7 +16,8 @@ struct ContentView: View {
 			} else {
 				SnippetView()
 			}
-		}.frame(width: 400, height: 430, alignment: .center)
+		}
+		.frame(width: 400, height: 430, alignment: .center)
 	}
 }
 
