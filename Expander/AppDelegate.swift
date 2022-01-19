@@ -37,6 +37,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	var appData: AppData!
 
 	@objc func openPreferences() {
+		//don't open the window if the window is already opened.
+		if let window = window {
+			if (window.isVisible) { return }
+		}
 		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(self.appData)
 		// Create the window and set the content view.
 		window = NSWindow(
@@ -48,6 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.toolbar = .prefToolBar
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
+		window.orderFrontRegardless()
 		window.isReleasedWhenClosed = false
 		window.makeKey()
 	}
