@@ -11,9 +11,9 @@ import UserNotifications
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-	//var window: NSWindow?
+	var longSnippetWindow: NSWindow?
 	// status bar
-	var window: NSWindow!
+	var prefWindow: NSWindow!
 	var statusbarItem: NSStatusItem!
 	var statusbarMenu: NSMenu!
 	var model: ExpanderModel!
@@ -38,26 +38,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	@objc func openPreferences() {
 		// Don't open the window but bring the window to front if the window is already opened.
-		if let window = window {
-			if (window.isVisible) {
-				window.orderFrontRegardless()
+		if let prefWindow = prefWindow {
+			if (prefWindow.isVisible) {
+				prefWindow.orderFrontRegardless()
 				return
 			}
 		}
 		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(self.appData)
 		// Create the window and set the content view.
-		window = NSWindow(
+		prefWindow = NSWindow(
 			contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
 			styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
 			backing: .buffered, defer: false)
-		window.center()
+		prefWindow.center()
 		NSToolbar.prefToolBar.delegate = self
-		window.toolbar = .prefToolBar
-		window.contentView = NSHostingView(rootView: contentView)
-		window.makeKeyAndOrderFront(nil)
-		window.orderFrontRegardless()
-		window.isReleasedWhenClosed = false
-		window.makeKey()
+		prefWindow.toolbar = .prefToolBar
+		prefWindow.contentView = NSHostingView(rootView: contentView)
+		prefWindow.orderFrontRegardless()
+		prefWindow.isReleasedWhenClosed = false
 	}
 
 	//
@@ -70,8 +68,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			userDefaults.bool(forKey: "showNotification")
 		}
 	}
+	
+	// close the window if click out of the window
+	func closeLongSnippetView() {
+		NSEvent.addGlobalMonitorForEvents(matching: .leftMouseDown) { (event) in
+			if let longSnippetWindow = self.longSnippetWindow {
+				if (!(longSnippetWindow.frame.contains(event.locationInWindow))) {
+					longSnippetWindow.close()
+				}
+			}
+		}
+	}
 
-	func toggleLongSnippetView() {
+	
+	@objc func toggleLongSnippetView() {
+		if let longSnippetWindow = self.longSnippetWindow {
+			if (longSnippetWindow.isVisible) {
+				longSnippetWindow.orderFrontRegardless()
+				return
+			}
+		}
+		longSnippetWindow = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 800, height: 500),
+									styleMask: [.titled, .fullSizeContentView],
+									backing: .buffered, defer: false)
+		longSnippetWindow?.contentView = NSHostingView(rootView: LongSnippetView())
+		longSnippetWindow?.level = .floating
+		longSnippetWindow?.showsToolbarButton = false
+		longSnippetWindow?.titlebarAppearsTransparent = true
+		longSnippetWindow?.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+		longSnippetWindow?.center()
+		NSApplication.shared.activate(ignoringOtherApps: true)
+		longSnippetWindow?.orderFrontRegardless()
+		longSnippetWindow?.isReleasedWhenClosed = false
+		longSnippetWindow?.makeKey()
 	}
 
 	//
@@ -106,12 +135,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		self.statusbarMenu = NSMenu()
 		self.setStatusBarIcon()
 		self.statusbarItem.menu = self.statusbarMenu
+		// toggle for the application
 		let toggle = NSMenuItem()
 		toggle.title = "toggle"
 		toggle.action = #selector(toggleExpander)
-		toggle.keyEquivalentModifierMask = [.command, .shift]
+		toggle.keyEquivalentModifierMask = [.control, .shift]
 		toggle.keyEquivalent = "e"
 		self.statusbarMenu.addItem(toggle)
+		//
+		let longSnippetToggle = NSMenuItem()
+		longSnippetToggle.title = "show long snippets"
+		longSnippetToggle.action = #selector(toggleLongSnippetView)
+		longSnippetToggle.keyEquivalentModifierMask = [.control, .shift]
+		longSnippetToggle.keyEquivalent = "s"
+		self.statusbarMenu.addItem(longSnippetToggle)
+		//
 		self.statusbarMenu.addItem(withTitle: "Preferences", action: #selector(openPreferences), keyEquivalent: ",")
 		self.statusbarMenu.addItem(NSMenuItem.separator())
 		self.statusbarMenu.addItem(withTitle: "Quit Expander",
@@ -155,7 +193,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
 		self.initData()
 		self.createStatusBar()
-		self.getuserPermission()
+		self.closeLongSnippetView()
+//		self.getuserPermission()
 		self.openPreferences()
 		self.model = ExpanderModel()
 		// load ip address

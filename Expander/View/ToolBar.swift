@@ -35,10 +35,12 @@ extension AppDelegate: NSToolbarDelegate {
 		switch itemIdentifier {
 		case NSToolbarItem.Identifier.general:
 			let button = NSButton(image: NSImage(systemSymbolName: "gearshape", accessibilityDescription: "gearshape")!, target: nil, action: #selector(openGeneral))
+			button.bezelStyle = .recessed
 			return customToolbarItem(itemIdentifier: itemIdentifier, label: "General", toolTip: "Your custom settings",
 				image: NSImage(named: NSImage.preferencesGeneralName)!, itemContent: button)
 		case NSToolbarItem.Identifier.snippets:
 			let button = NSButton(image: NSImage(systemSymbolName: "doc.text", accessibilityDescription: "doc.text")!, target: nil, action: #selector(addSnippets))
+			button.bezelStyle = .recessed
 			return customToolbarItem(itemIdentifier: itemIdentifier, label: "Snippets", toolTip: "Manage your snippets",
 				image: NSImage(named: NSImage.addTemplateName)!, itemContent: button)
 		default:

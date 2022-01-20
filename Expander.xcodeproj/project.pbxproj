@@ -27,6 +27,8 @@
 		D4D9EDEE26D5614800E75825 /* DefaultSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */; };
 		D4D9EDF026D5621C00E75825 /* DefaultSnippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */; };
 		D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */; };
+		D4DFF53B2799207700B9A11B /* LongSnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DFF53A2799207700B9A11B /* LongSnippetView.swift */; };
+		D4DFF53D279933C700B9A11B /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DFF53C279933C700B9A11B /* SearchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +55,8 @@
 		D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetsView.swift; sourceTree = "<group>"; };
 		D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippets.swift; sourceTree = "<group>"; };
 		D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetTableView.swift; sourceTree = "<group>"; };
+		D4DFF53A2799207700B9A11B /* LongSnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSnippetView.swift; sourceTree = "<group>"; };
+		D4DFF53C279933C700B9A11B /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +127,7 @@
 		D48A622E26BFACA400E4A419 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D4DFF5392799205B00B9A11B /* LongSnippetView */,
 				D48A621A26BFAC1300E4A419 /* ContentView.swift */,
 				D48A623626BFAD3C00E4A419 /* ToolBar.swift */,
 				D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */,
@@ -173,6 +178,15 @@
 				D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */,
 			);
 			path = DefaultSnippet;
+			sourceTree = "<group>";
+		};
+		D4DFF5392799205B00B9A11B /* LongSnippetView */ = {
+			isa = PBXGroup;
+			children = (
+				D4DFF53A2799207700B9A11B /* LongSnippetView.swift */,
+				D4DFF53C279933C700B9A11B /* SearchBar.swift */,
+			);
+			path = LongSnippetView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +267,7 @@
 				D4B0DE0C26FB52AD0026FDEC /* GetIPaddress.swift in Sources */,
 				D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */,
 				D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */,
+				D4DFF53B2799207700B9A11B /* LongSnippetView.swift in Sources */,
 				D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */,
 				D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */,
 				D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */,
@@ -263,6 +278,7 @@
 				D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */,
 				D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */,
 				D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */,
+				D4DFF53D279933C700B9A11B /* SearchBar.swift in Sources */,
 				D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */,
 				D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */,
 				D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */,

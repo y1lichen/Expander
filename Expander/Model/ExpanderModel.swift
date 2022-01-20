@@ -100,8 +100,6 @@ class ExpanderModel {
 	//
 	lazy var snippetList: [Snippets] = fetchSnippetList()
 	// TODO: - finish this function
-	func toggleLongSnippetView() {
-	}
 	// reload core data
 	@objc func managedObjectContextWillSave() {
 		self.snippetList = fetchSnippetList()
@@ -130,18 +128,25 @@ class ExpanderModel {
 		NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: self.context)
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadIPdata), name: NSNotification.Name(rawValue: "loadipdata"), object: nil)
 		// MARK: - MAIN
+		//
+//		NSEvent.addGlobalMonitorForEvents(matching: .keyUp) { (event) in
+//			if event.modifierFlags.contains([.command, .shift]) && event.keyCode == 49 {
+//				self.appdelegate.toggleLongSnippetView()
+//			}
+//		}
+		//
 		NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { (event) in
-			if event.modifierFlags.contains([.command, .shift]) && event.keyCode == 14 {
+			let keycode = event.keyCode
+			if event.modifierFlags.contains([.control, .shift]) && keycode == 14 {
 				self.appdelegate.toggleExpander()
 				return
-			} else if ((event.modifierFlags.contains([.command, .shift]) && event.keyCode == 32)) {
-				self.toggleLongSnippetView()
+			} else if (event.modifierFlags.contains([.control, .shift]) && keycode == 1) {
+				self.appdelegate.toggleLongSnippetView()
 			}
 			if self.appdelegate.isOn {
 				guard let character = event.characters else { return }
 				// if character is nil, the following won't be execute
-				let keycode = event.keyCode
-				// print(character, keycode)
+				print(keycode)
 				if keycode > 95 {
 					self.text = ""
 				} else if event.isDeleteKey, !self.text.isEmpty {
