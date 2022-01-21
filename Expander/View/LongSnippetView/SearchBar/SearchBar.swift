@@ -14,7 +14,9 @@ struct SearchBar: View {
 				.resizable()
 				.scaledToFit()
 				.frame(height: 25)
+			SearchBarTextField()
 		}
+		.frame(height: 28)
 	}
 }
 

@@ -11,6 +11,7 @@ struct LongSnippetView: View {
     var body: some View {
 		VStack {
 			SearchBar()
+			Spacer()
 		}
 		.frame(width: 800, height: 500, alignment: .topLeading)
 	}

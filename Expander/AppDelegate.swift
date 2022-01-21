@@ -88,13 +88,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 				return
 			}
 		}
-		longSnippetWindow = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 800, height: 500),
-									styleMask: [.titled, .fullSizeContentView],
-									backing: .buffered, defer: false)
-		longSnippetWindow?.contentView = NSHostingView(rootView: LongSnippetView())
+		longSnippetWindow = NSWindow(
+			contentRect: NSRect(x: 0, y: 0, width: 800, height: 400),
+			styleMask: [.borderless],
+			backing: .buffered, defer: false)
+		let effectView = NSVisualEffectView()
+		effectView.blendingMode = .behindWindow
+		effectView.state = .active
+		effectView.translatesAutoresizingMaskIntoConstraints = false
+		effectView.wantsLayer = true
+		effectView.material = .titlebar
+		effectView.layer?.cornerRadius = 10.0
+		effectView.layer?.masksToBounds = true
+		longSnippetWindow?.isOpaque = false
+		longSnippetWindow?.backgroundColor = .clear
+		longSnippetWindow?.titleVisibility = .hidden
+		longSnippetWindow?.contentView?.addSubview(effectView)
+		guard let constraints = longSnippetWindow?.contentView else { return }
+		effectView.leadingAnchor.constraint(equalTo: constraints.leadingAnchor).isActive = true
+		effectView.trailingAnchor.constraint(equalTo: constraints.trailingAnchor).isActive = true
+		effectView.topAnchor.constraint(equalTo: constraints.topAnchor).isActive = true
+		effectView.bottomAnchor.constraint(equalTo: constraints.bottomAnchor).isActive = true
 		longSnippetWindow?.level = .floating
-		longSnippetWindow?.showsToolbarButton = false
-		longSnippetWindow?.titlebarAppearsTransparent = true
+		longSnippetWindow?.isMovable = true
+		longSnippetWindow?.isMovableByWindowBackground = true
 		longSnippetWindow?.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
 		longSnippetWindow?.center()
 		NSApplication.shared.activate(ignoringOtherApps: true)

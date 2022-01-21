@@ -21,6 +21,7 @@
 		D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623426BFAD2400E4A419 /* SnippetsModel.swift */; };
 		D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623626BFAD3C00E4A419 /* ToolBar.swift */; };
 		D4B0DE0C26FB52AD0026FDEC /* GetIPaddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0DE0B26FB52AD0026FDEC /* GetIPaddress.swift */; };
+		D4CDF834279A5B87000A1899 /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CDF833279A5B87000A1899 /* SearchBarTextField.swift */; };
 		D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */; };
 		D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */; };
 		D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEB26D5603900E75825 /* SnippetView.swift */; };
@@ -49,6 +50,7 @@
 		D48A623426BFAD2400E4A419 /* SnippetsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsModel.swift; sourceTree = "<group>"; };
 		D48A623626BFAD3C00E4A419 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 		D4B0DE0B26FB52AD0026FDEC /* GetIPaddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetIPaddress.swift; sourceTree = "<group>"; };
+		D4CDF833279A5B87000A1899 /* SearchBarTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
 		D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D4D9EDEB26D5603900E75825 /* SnippetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetView.swift; sourceTree = "<group>"; };
@@ -153,6 +155,15 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		D4CDF832279A5B69000A1899 /* SearchBar */ = {
+			isa = PBXGroup;
+			children = (
+				D4DFF53C279933C700B9A11B /* SearchBar.swift */,
+				D4CDF833279A5B87000A1899 /* SearchBarTextField.swift */,
+			);
+			path = SearchBar;
+			sourceTree = "<group>";
+		};
 		D4D9EDF126D5622400E75825 /* Snippets */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,8 +194,8 @@
 		D4DFF5392799205B00B9A11B /* LongSnippetView */ = {
 			isa = PBXGroup;
 			children = (
+				D4CDF832279A5B69000A1899 /* SearchBar */,
 				D4DFF53A2799207700B9A11B /* LongSnippetView.swift */,
-				D4DFF53C279933C700B9A11B /* SearchBar.swift */,
 			);
 			path = LongSnippetView;
 			sourceTree = "<group>";
@@ -278,6 +289,7 @@
 				D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */,
 				D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */,
 				D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */,
+				D4CDF834279A5B87000A1899 /* SearchBarTextField.swift in Sources */,
 				D4DFF53D279933C700B9A11B /* SearchBar.swift in Sources */,
 				D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */,
 				D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */,
