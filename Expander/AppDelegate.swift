@@ -11,7 +11,6 @@ import UserNotifications
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-	var longSnippetWindow: NSWindow?
 	// status bar
 	var prefWindow: NSWindow!
 	var statusbarItem: NSStatusItem!
@@ -54,6 +53,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		NSToolbar.prefToolBar.delegate = self
 		prefWindow.toolbar = .prefToolBar
 		prefWindow.contentView = NSHostingView(rootView: contentView)
+		NSApplication.shared.activate(ignoringOtherApps: true)
 		prefWindow.orderFrontRegardless()
 		prefWindow.isReleasedWhenClosed = false
 	}
@@ -82,42 +82,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	
 	@objc func toggleLongSnippetView() {
-		if let longSnippetWindow = self.longSnippetWindow {
-			if (longSnippetWindow.isVisible) {
-				longSnippetWindow.orderFrontRegardless()
-				return
-			}
-		}
-		longSnippetWindow = NSWindow(
-			contentRect: NSRect(x: 0, y: 0, width: 800, height: 400),
-			styleMask: [.borderless],
-			backing: .buffered, defer: false)
-		let effectView = NSVisualEffectView()
-		effectView.blendingMode = .behindWindow
-		effectView.state = .active
-		effectView.translatesAutoresizingMaskIntoConstraints = false
-		effectView.wantsLayer = true
-		effectView.material = .titlebar
-		effectView.layer?.cornerRadius = 10.0
-		effectView.layer?.masksToBounds = true
-		longSnippetWindow?.isOpaque = false
-		longSnippetWindow?.backgroundColor = .clear
-		longSnippetWindow?.titleVisibility = .hidden
-		longSnippetWindow?.contentView?.addSubview(effectView)
-		guard let constraints = longSnippetWindow?.contentView else { return }
-		effectView.leadingAnchor.constraint(equalTo: constraints.leadingAnchor).isActive = true
-		effectView.trailingAnchor.constraint(equalTo: constraints.trailingAnchor).isActive = true
-		effectView.topAnchor.constraint(equalTo: constraints.topAnchor).isActive = true
-		effectView.bottomAnchor.constraint(equalTo: constraints.bottomAnchor).isActive = true
-		longSnippetWindow?.level = .floating
-		longSnippetWindow?.isMovable = true
-		longSnippetWindow?.isMovableByWindowBackground = true
-		longSnippetWindow?.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-		longSnippetWindow?.center()
-		NSApplication.shared.activate(ignoringOtherApps: true)
-		longSnippetWindow?.orderFrontRegardless()
-		longSnippetWindow?.isReleasedWhenClosed = false
-		longSnippetWindow?.makeKey()
 	}
 
 	//
