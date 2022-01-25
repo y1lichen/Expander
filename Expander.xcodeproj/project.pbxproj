@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */; };
 		D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */; };
 		D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */; };
+		D43CA30C279EAC1000C93BD5 /* DSFQuickActionBar in Frameworks */ = {isa = PBXBuildFile; productRef = D43CA30B279EAC1000C93BD5 /* DSFQuickActionBar */; };
 		D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4567AD326CCFCC50007224E /* SnippetTableView.swift */; };
 		D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621826BFAC1300E4A419 /* AppDelegate.swift */; };
 		D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621A26BFAC1300E4A419 /* ContentView.swift */; };
@@ -60,12 +61,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D43CA30C279EAC1000C93BD5 /* DSFQuickActionBar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D43CA30D279EB63A00C93BD5 /* SearchBarView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SearchBarView;
+			sourceTree = "<group>";
+		};
 		D4567AD226CCFC9A0007224E /* AddSnippetView */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +132,7 @@
 		D48A622E26BFACA400E4A419 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D43CA30D279EB63A00C93BD5 /* SearchBarView */,
 				D48A621A26BFAC1300E4A419 /* ContentView.swift */,
 				D48A623626BFAD3C00E4A419 /* ToolBar.swift */,
 				D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */,
@@ -192,6 +202,7 @@
 			);
 			name = Expander;
 			packageProductDependencies = (
+				D43CA30B279EAC1000C93BD5 /* DSFQuickActionBar */,
 			);
 			productName = Expander;
 			productReference = D48A621526BFAC1300E4A419 /* Expander.app */;
@@ -221,6 +232,7 @@
 			);
 			mainGroup = D48A620C26BFAC1300E4A419;
 			packageReferences = (
+				D43CA30A279EAC1000C93BD5 /* XCRemoteSwiftPackageReference "DSFQuickActionBar" */,
 			);
 			productRefGroup = D48A621626BFAC1300E4A419 /* Products */;
 			projectDirPath = "";
@@ -472,6 +484,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D43CA30A279EAC1000C93BD5 /* XCRemoteSwiftPackageReference "DSFQuickActionBar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dagronf/DSFQuickActionBar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D43CA30B279EAC1000C93BD5 /* DSFQuickActionBar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D43CA30A279EAC1000C93BD5 /* XCRemoteSwiftPackageReference "DSFQuickActionBar" */;
+			productName = DSFQuickActionBar;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */ = {

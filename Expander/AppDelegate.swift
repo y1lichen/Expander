@@ -8,9 +8,11 @@
 import Cocoa
 import SwiftUI
 import UserNotifications
+import DSFQuickActionBar
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
+	//
 	// status bar
 	var prefWindow: NSWindow!
 	var statusbarItem: NSStatusItem!
@@ -66,17 +68,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	var allowNotification: Bool {
 		get {
 			userDefaults.bool(forKey: "showNotification")
-		}
-	}
-	
-	// close the window if click out of the window
-	func closeLongSnippetView() {
-		NSEvent.addGlobalMonitorForEvents(matching: .leftMouseDown) { (event) in
-			if let longSnippetWindow = self.longSnippetWindow {
-				if (!(longSnippetWindow.frame.contains(event.locationInWindow))) {
-					longSnippetWindow.close()
-				}
-			}
 		}
 	}
 
@@ -143,7 +134,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			"showNotification": false,
 			"passiveMode": false,
 			"passiveExpandKey": "\\",
-			"dateformat": 0
+			"dateformat": 0,
+			"longSnippetsDirectory": URL(fileURLWithPath: (NSHomeDirectory() + "/Documents/Expander/")).absoluteString
 			])
 		self.appData = AppData()
 	}
@@ -174,7 +166,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
 		self.initData()
 		self.createStatusBar()
-		self.closeLongSnippetView()
 //		self.getuserPermission()
 		self.openPreferences()
 		self.model = ExpanderModel()

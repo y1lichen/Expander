@@ -55,6 +55,8 @@
 - [x] optional expand-key for passive mode
 
 ---
+### Dependencies
+- [DSFQuickActionBar](https://github.com/dagronf/DSFQuickActionBar)
 
 ### More
 
