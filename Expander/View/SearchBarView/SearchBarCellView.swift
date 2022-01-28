@@ -9,7 +9,17 @@ import SwiftUI
 
 struct SearchBarCellView: View {
 	let longSnippet: LongSnippetModel
+	
+	func removeFileExtension(name: String) -> String {
+		let length: Int = name.count
+		let indexOfDot: Int = name.lastIndex(of: ".")?.utf16Offset(in: name) ?? 0
+		let result = String(name.dropLast(length - indexOfDot))
+		return result
+	}
+	
     var body: some View {
-		Text(longSnippet.name).font(.title)
-    }
+		Text(removeFileExtension(name: longSnippet.name))
+			.font(.system(size: 25, weight: .bold))
+			.padding(5)
+	}
 }

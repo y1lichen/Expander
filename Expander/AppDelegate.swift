@@ -14,9 +14,6 @@ import DSFQuickActionBar
 class AppDelegate: NSObject, NSApplicationDelegate {
 	var appData: AppData!
 	//
-	@State var selectedLongSnippet: LongSnippetModel?
-	let searchBar = DSFQuickActionBar.SwiftUI<SearchBarCellView>()
-	//
 	var isOn: Bool = true
 	//
 	// status bar
@@ -194,7 +191,11 @@ extension AppDelegate {
 
 	
 	@objc func toggleLongSnippetView() {
-		self.searchBar.present(placeholderText: "Snippet Search", contentSource: SearchBarContentSource(selectedLongSnippet: $selectedLongSnippet))
+		let longSnippets = getLongSnippet()
+		let searchBar = DSFQuickActionBar.SwiftUI<SearchBarCellView>()
+		searchBar.present(placeholderText: "Snippet Search",
+						  width: 750,
+						  contentSource: SearchBarContentSource(allSnippets: longSnippets))
 	}
 
 	//
@@ -291,9 +292,9 @@ extension AppDelegate {
 			guard let pathUrl = UserDefaults.standard.string(forKey: "longSnippetsDirectory") else {
 				return []
 			}
-			let files = try fileManager.contentsOfDirectory(atPath: (pathUrl))
+			let files = try fileManager.contentsOfDirectory(atPath: (pathUrl)) as [String]
 			return files.map {
-				file in LongSnippetModel(name: file.description)
+				file in LongSnippetModel(name: file)
 			}
 		} catch {
 			// error (probably no permission)

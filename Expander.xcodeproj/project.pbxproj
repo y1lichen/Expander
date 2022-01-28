@@ -12,9 +12,10 @@
 		D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */; };
 		D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D40F864926C54D5F006C9FC0 /* Expander.xcdatamodeld */; };
 		D43CA30C279EAC1000C93BD5 /* DSFQuickActionBar in Frameworks */ = {isa = PBXBuildFile; productRef = D43CA30B279EAC1000C93BD5 /* DSFQuickActionBar */; };
+		D44E7ACD27A39AFF000464C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E7ACC27A39AFF000464C3 /* ContentView.swift */; };
+		D44E7ACF27A39E6E000464C3 /* SearchBarCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E7ACE27A39E6E000464C3 /* SearchBarCellView.swift */; };
 		D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4567AD326CCFCC50007224E /* SnippetTableView.swift */; };
 		D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621826BFAC1300E4A419 /* AppDelegate.swift */; };
-		D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A621A26BFAC1300E4A419 /* ContentView.swift */; };
 		D48A622026BFAC1400E4A419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48A621F26BFAC1400E4A419 /* Assets.xcassets */; };
 		D48A622326BFAC1400E4A419 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D48A622226BFAC1400E4A419 /* Preview Assets.xcassets */; };
 		D48A622626BFAC1400E4A419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D48A622426BFAC1400E4A419 /* Main.storyboard */; };
@@ -29,7 +30,6 @@
 		D4D9EDF026D5621C00E75825 /* DefaultSnippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */; };
 		D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */; };
 		D4E6614327A2EA8E00999D8E /* LongSnippetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6614227A2EA8E00999D8E /* LongSnippetModel.swift */; };
-		D4E6614727A2F5FA00999D8E /* SearchBarCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6614627A2F5FA00999D8E /* SearchBarCellView.swift */; };
 		D4E6614927A2F6FC00999D8E /* SearchBarContentSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6614827A2F6FC00999D8E /* SearchBarContentSource.swift */; };
 /* End PBXBuildFile section */
 
@@ -38,10 +38,11 @@
 		D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingView.swift; sourceTree = "<group>"; };
 		D4051D8E26C0C0FF0067B966 /* AddSnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSnippetsView.swift; sourceTree = "<group>"; };
 		D40F864A26C54D5F006C9FC0 /* Expander.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Expander.xcdatamodel; sourceTree = "<group>"; };
+		D44E7ACC27A39AFF000464C3 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D44E7ACE27A39E6E000464C3 /* SearchBarCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarCellView.swift; sourceTree = "<group>"; };
 		D4567AD326CCFCC50007224E /* SnippetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetTableView.swift; sourceTree = "<group>"; };
 		D48A621526BFAC1300E4A419 /* Expander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D48A621826BFAC1300E4A419 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D48A621A26BFAC1300E4A419 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D48A621F26BFAC1400E4A419 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D48A622226BFAC1400E4A419 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D48A622526BFAC1400E4A419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -58,7 +59,6 @@
 		D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippets.swift; sourceTree = "<group>"; };
 		D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetTableView.swift; sourceTree = "<group>"; };
 		D4E6614227A2EA8E00999D8E /* LongSnippetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSnippetModel.swift; sourceTree = "<group>"; };
-		D4E6614627A2F5FA00999D8E /* SearchBarCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarCellView.swift; sourceTree = "<group>"; };
 		D4E6614827A2F6FC00999D8E /* SearchBarContentSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarContentSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,7 +77,7 @@
 		D43CA30D279EB63A00C93BD5 /* SearchBarView */ = {
 			isa = PBXGroup;
 			children = (
-				D4E6614627A2F5FA00999D8E /* SearchBarCellView.swift */,
+				D44E7ACE27A39E6E000464C3 /* SearchBarCellView.swift */,
 				D4E6614827A2F6FC00999D8E /* SearchBarContentSource.swift */,
 			);
 			path = SearchBarView;
@@ -140,8 +140,8 @@
 		D48A622E26BFACA400E4A419 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D44E7ACC27A39AFF000464C3 /* ContentView.swift */,
 				D43CA30D279EB63A00C93BD5 /* SearchBarView */,
-				D48A621A26BFAC1300E4A419 /* ContentView.swift */,
 				D48A623626BFAD3C00E4A419 /* ToolBar.swift */,
 				D4051D8C26C0C0EC0067B966 /* GeneralSettingView.swift */,
 				D4567AD226CCFC9A0007224E /* AddSnippetView */,
@@ -275,8 +275,8 @@
 				D4051D8D26C0C0EC0067B966 /* GeneralSettingView.swift in Sources */,
 				D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */,
 				D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */,
-				D48A621B26BFAC1300E4A419 /* ContentView.swift in Sources */,
 				D4567AD426CCFCC50007224E /* SnippetTableView.swift in Sources */,
+				D44E7ACD27A39AFF000464C3 /* ContentView.swift in Sources */,
 				D4051D8F26C0C0FF0067B966 /* AddSnippetsView.swift in Sources */,
 				D4D9EDEE26D5614800E75825 /* DefaultSnippetsView.swift in Sources */,
 				D4051D8B26C0C0890067B966 /* AppData.swift in Sources */,
@@ -286,7 +286,7 @@
 				D4E6614927A2F6FC00999D8E /* SearchBarContentSource.swift in Sources */,
 				D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */,
 				D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */,
-				D4E6614727A2F5FA00999D8E /* SearchBarCellView.swift in Sources */,
+				D44E7ACF27A39E6E000464C3 /* SearchBarCellView.swift in Sources */,
 				D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */,
 				D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */,
 				D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */,
