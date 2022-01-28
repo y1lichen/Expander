@@ -9,8 +9,10 @@ import SwiftUI
 
 struct appSettings {
 	
+	let defaultDirectory: String = NSHomeDirectory() + "/Documents/Expander/"
+	
 	mutating func resetLongSnippetsDirectory() {
-		longSnippetsDirectory = URL(fileURLWithPath: NSHomeDirectory() + "/Documents/Expander/").absoluteString
+		longSnippetsDirectory = defaultDirectory
 	}
 	let userDefaults = UserDefaults.standard
 	var showAlert: Bool
@@ -51,12 +53,12 @@ struct appSettings {
 
     init() {
 		showAlert = false
-		longSnippetsDirectory = userDefaults.string(forKey: "longSnippetsDirectory") ?? URL(fileURLWithPath: (NSHomeDirectory() + "Documents/Expander/")).absoluteString
-        showNotification = userDefaults.bool(forKey: "showNotification")
-        dateformat = userDefaults.integer(forKey: "dateformat")
-        isPassive = userDefaults.bool(forKey: "passiveMode")
+		longSnippetsDirectory = userDefaults.string(forKey: "longSnippetsDirectory") ?? (NSHomeDirectory() + "/Documents/Expander/")
+		showNotification = userDefaults.bool(forKey: "showNotification")
+		dateformat = userDefaults.integer(forKey: "dateformat")
+		isPassive = userDefaults.bool(forKey: "passiveMode")
         expandKey = userDefaults.string(forKey: "passiveExpandKey") ?? "\\"
-		if (self.longSnippetsDirectory != URL(fileURLWithPath: NSHomeDirectory() + "/Documents/Expander/").absoluteString) {
+		if (self.longSnippetsDirectory != defaultDirectory) {
 			urlSelectionType = 1
 		}
     }
@@ -72,7 +74,12 @@ struct GeneralSettingView: View {
     }
 	
 	func parseCustomDirectory(_ pathName: String) -> String {
-		let result = pathName.replacingOccurrences(of: ("file://" + NSHomeDirectory()), with: "~")
+		let result = pathName.dropFirst(7)
+		return String(result)
+	}
+	
+	func parseCustomDirectoryForView(_ pathName: String) -> String {
+		let result = pathName.replacingOccurrences(of: NSHomeDirectory(), with: "~")
 		return result
 	}
 	
@@ -91,7 +98,7 @@ struct GeneralSettingView: View {
 			guard let result = dialog.url else {
 				return
 			}
-			self.settings.longSnippetsDirectory = result.absoluteString
+			self.settings.longSnippetsDirectory = parseCustomDirectory(result.absoluteString)
 			self.settings.urlSelectionType = 1
 		}
 	}
@@ -112,7 +119,7 @@ struct GeneralSettingView: View {
 					Divider()
 					Text("Other").tag(2)
 				} else if (settings.urlSelectionType == 1) {
-					Text(parseCustomDirectory(self.settings.longSnippetsDirectory)).tag(1)
+					Text(parseCustomDirectoryForView(self.settings.longSnippetsDirectory)).tag(1)
 					Text("~/Documents/Expender/").tag(0)
 					Divider()
 					Text("Other").tag(2)

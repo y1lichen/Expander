@@ -28,6 +28,9 @@
 		D4D9EDEE26D5614800E75825 /* DefaultSnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */; };
 		D4D9EDF026D5621C00E75825 /* DefaultSnippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */; };
 		D4DFCFAA26D61E63005A299F /* DefaultSnippetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */; };
+		D4E6614327A2EA8E00999D8E /* LongSnippetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6614227A2EA8E00999D8E /* LongSnippetModel.swift */; };
+		D4E6614727A2F5FA00999D8E /* SearchBarCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6614627A2F5FA00999D8E /* SearchBarCellView.swift */; };
+		D4E6614927A2F6FC00999D8E /* SearchBarContentSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E6614827A2F6FC00999D8E /* SearchBarContentSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +57,9 @@
 		D4D9EDED26D5614800E75825 /* DefaultSnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetsView.swift; sourceTree = "<group>"; };
 		D4D9EDEF26D5621C00E75825 /* DefaultSnippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippets.swift; sourceTree = "<group>"; };
 		D4DFCFA926D61E63005A299F /* DefaultSnippetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSnippetTableView.swift; sourceTree = "<group>"; };
+		D4E6614227A2EA8E00999D8E /* LongSnippetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSnippetModel.swift; sourceTree = "<group>"; };
+		D4E6614627A2F5FA00999D8E /* SearchBarCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarCellView.swift; sourceTree = "<group>"; };
+		D4E6614827A2F6FC00999D8E /* SearchBarContentSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarContentSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +77,8 @@
 		D43CA30D279EB63A00C93BD5 /* SearchBarView */ = {
 			isa = PBXGroup;
 			children = (
+				D4E6614627A2F5FA00999D8E /* SearchBarCellView.swift */,
+				D4E6614827A2F6FC00999D8E /* SearchBarContentSource.swift */,
 			);
 			path = SearchBarView;
 			sourceTree = "<group>";
@@ -146,6 +154,7 @@
 			children = (
 				D48A623226BFAD0200E4A419 /* ExpanderModel.swift */,
 				D4051D8A26C0C0890067B966 /* AppData.swift */,
+				D4E6614227A2EA8E00999D8E /* LongSnippetModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -272,9 +281,12 @@
 				D4D9EDEE26D5614800E75825 /* DefaultSnippetsView.swift in Sources */,
 				D4051D8B26C0C0890067B966 /* AppData.swift in Sources */,
 				D4D9EDF026D5621C00E75825 /* DefaultSnippets.swift in Sources */,
+				D4E6614327A2EA8E00999D8E /* LongSnippetModel.swift in Sources */,
 				D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */,
+				D4E6614927A2F6FC00999D8E /* SearchBarContentSource.swift in Sources */,
 				D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */,
 				D40F864B26C54D5F006C9FC0 /* Expander.xcdatamodeld in Sources */,
+				D4E6614727A2F5FA00999D8E /* SearchBarCellView.swift in Sources */,
 				D4D9EDEC26D5603900E75825 /* SnippetView.swift in Sources */,
 				D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */,
 				D48A621926BFAC1300E4A419 /* AppDelegate.swift in Sources */,

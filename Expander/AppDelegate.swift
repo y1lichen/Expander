@@ -12,6 +12,12 @@ import DSFQuickActionBar
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
+	var appData: AppData!
+	//
+	@State var selectedLongSnippet: LongSnippetModel?
+	let searchBar = DSFQuickActionBar.SwiftUI<SearchBarCellView>()
+	//
+	var isOn: Bool = true
 	//
 	// status bar
 	var prefWindow: NSWindow!
@@ -20,147 +26,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	var model: ExpanderModel!
 	// timer for reload ipdate
 	var timer: DispatchSourceTimer?
-	/*
-	## get user permisission
-	- https://developer.apple.com/forums/thread/24288
-	*/
-	// MARK: - remove sandbox to show notification
-	//
-	func getuserPermission() {
-		// for key-press detection
-		AXIsProcessTrustedWithOptions(
-		[kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
-		// for notification
-		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
-		_, _ in
-	    }
-	}
-	var appData: AppData!
-
-	@objc func openPreferences() {
-		// Don't open the window but bring the window to front if the window is already opened.
-		if let prefWindow = prefWindow {
-			if (prefWindow.isVisible) {
-				prefWindow.orderFrontRegardless()
-				return
-			}
-		}
-		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(self.appData)
-		// Create the window and set the content view.
-		prefWindow = NSWindow(
-			contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-			styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-			backing: .buffered, defer: false)
-		prefWindow.center()
-		NSToolbar.prefToolBar.delegate = self
-		prefWindow.toolbar = .prefToolBar
-		prefWindow.contentView = NSHostingView(rootView: contentView)
-		NSApplication.shared.activate(ignoringOtherApps: true)
-		prefWindow.orderFrontRegardless()
-		prefWindow.isReleasedWhenClosed = false
-	}
-
-	//
-	var isOn: Bool = true
-	//
-	let userDefaults = UserDefaults.standard
-	//
-	var allowNotification: Bool {
-		get {
-			userDefaults.bool(forKey: "showNotification")
-		}
-	}
-
 	
-	@objc func toggleLongSnippetView() {
-	}
-
-	//
-	@objc func toggleExpander() {
-		self.isOn.toggle()
-		self.setStatusBarIcon()
-		if self.allowNotification && !self.isOn {
-			self.sendNotification()
-		}
-	}
-
-	func createImage(imgName: String) -> NSImage {
-		let image = NSImage(named: imgName)!
-		image.isTemplate = true
-		image.size = NSSize(width: 16, height: 16)
-		return image
-	}
-	//
-	func setStatusBarIcon() {
-		let onImage = createImage(imgName: "onImage")
-		let offImage = createImage(imgName: "offImage")
-		if self.isOn {
-			self.statusbarItem.button?.image = onImage
-		} else {
-			self.statusbarItem.button?.image = offImage
-		}
-	}
-
-	//
-	func createStatusBar() {
-		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-		self.statusbarMenu = NSMenu()
-		self.setStatusBarIcon()
-		self.statusbarItem.menu = self.statusbarMenu
-		// toggle for the application
-		let toggle = NSMenuItem()
-		toggle.title = "toggle"
-		toggle.action = #selector(toggleExpander)
-		toggle.keyEquivalentModifierMask = [.control, .shift]
-		toggle.keyEquivalent = "e"
-		self.statusbarMenu.addItem(toggle)
-		//
-		let longSnippetToggle = NSMenuItem()
-		longSnippetToggle.title = "show long snippets"
-		longSnippetToggle.action = #selector(toggleLongSnippetView)
-		longSnippetToggle.keyEquivalentModifierMask = [.control, .shift]
-		longSnippetToggle.keyEquivalent = "s"
-		self.statusbarMenu.addItem(longSnippetToggle)
-		//
-		self.statusbarMenu.addItem(withTitle: "Preferences", action: #selector(openPreferences), keyEquivalent: ",")
-		self.statusbarMenu.addItem(NSMenuItem.separator())
-		self.statusbarMenu.addItem(withTitle: "Quit Expander",
-							action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
-	}
-
-	func initData() {
-		userDefaults.register(defaults: [
-			"sortMethod": "snippetTrigger",
-			"showNotification": false,
-			"passiveMode": false,
-			"passiveExpandKey": "\\",
-			"dateformat": 0,
-			"longSnippetsDirectory": URL(fileURLWithPath: (NSHomeDirectory() + "/Documents/Expander/")).absoluteString
-			])
-		self.appData = AppData()
-	}
-	//
-    func sendNotification() {
-       let content = UNMutableNotificationContent()
-       content.title = "Expander is disabled"
-       content.subtitle = "Press cmd+shift+e to renable Expander."
-       content.sound = UNNotificationSound.default
-       let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-       let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-		UNUserNotificationCenter.current().add(request)
-    }
-	//
-	func postLoadIPdataNotification() {
-		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadipdata"), object: nil)
-	}
-	func loadIPdata() {
-		timer = DispatchSource.makeTimerSource()
-		timer?.schedule(deadline: DispatchTime.now(), repeating: DispatchTimeInterval.seconds(3600), leeway: DispatchTimeInterval.seconds(5))
-		timer?.setEventHandler(handler: postLoadIPdataNotification)
-		// start the timer
-		timer?.resume()
-	}
-	//
+	let userDefaults = UserDefaults.standard
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
@@ -276,5 +143,166 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 /*
-
 */
+
+extension AppDelegate {
+	/*
+	## get user permisission
+	- https://developer.apple.com/forums/thread/24288
+	*/
+	// MARK: - remove sandbox to show notification
+	//
+	func getuserPermission() {
+		// for key-press detection
+		AXIsProcessTrustedWithOptions(
+		[kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
+		// for notification
+		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {
+		_, _ in
+		}
+	}
+
+	@objc func openPreferences() {
+		// Don't open the window but bring the window to front if the window is already opened.
+		if let prefWindow = prefWindow {
+			if (prefWindow.isVisible) {
+				prefWindow.orderFrontRegardless()
+				return
+			}
+		}
+		let contentView = ContentView().environment(\.managedObjectContext, persistentContainer.viewContext).environmentObject(self.appData)
+		// Create the window and set the content view.
+		prefWindow = NSWindow(
+			contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+			styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+			backing: .buffered, defer: false)
+		prefWindow.center()
+		NSToolbar.prefToolBar.delegate = self
+		prefWindow.toolbar = .prefToolBar
+		prefWindow.contentView = NSHostingView(rootView: contentView)
+		NSApplication.shared.activate(ignoringOtherApps: true)
+		prefWindow.orderFrontRegardless()
+		prefWindow.isReleasedWhenClosed = false
+	}
+
+	//
+	var allowNotification: Bool {
+		get {
+			userDefaults.bool(forKey: "showNotification")
+		}
+	}
+
+	
+	@objc func toggleLongSnippetView() {
+		self.searchBar.present(placeholderText: "Snippet Search", contentSource: SearchBarContentSource(selectedLongSnippet: $selectedLongSnippet))
+	}
+
+	//
+	@objc func toggleExpander() {
+		self.isOn.toggle()
+		self.setStatusBarIcon()
+		if self.allowNotification && !self.isOn {
+			self.sendNotification()
+		}
+	}
+
+	func createImage(imgName: String) -> NSImage {
+		let image = NSImage(named: imgName)!
+		image.isTemplate = true
+		image.size = NSSize(width: 16, height: 16)
+		return image
+	}
+	//
+	func setStatusBarIcon() {
+		let onImage = createImage(imgName: "onImage")
+		let offImage = createImage(imgName: "offImage")
+		if self.isOn {
+			self.statusbarItem.button?.image = onImage
+		} else {
+			self.statusbarItem.button?.image = offImage
+		}
+	}
+
+	//
+	func createStatusBar() {
+		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+		self.statusbarMenu = NSMenu()
+		self.setStatusBarIcon()
+		self.statusbarItem.menu = self.statusbarMenu
+		// toggle for the application
+		let toggle = NSMenuItem()
+		toggle.title = "toggle"
+		toggle.action = #selector(toggleExpander)
+		toggle.keyEquivalentModifierMask = [.control, .shift]
+		toggle.keyEquivalent = "e"
+		self.statusbarMenu.addItem(toggle)
+		//
+		let longSnippetToggle = NSMenuItem()
+		longSnippetToggle.title = "show long snippets"
+		longSnippetToggle.action = #selector(toggleLongSnippetView)
+		longSnippetToggle.keyEquivalentModifierMask = [.control, .shift]
+		longSnippetToggle.keyEquivalent = "s"
+		self.statusbarMenu.addItem(longSnippetToggle)
+		//
+		self.statusbarMenu.addItem(withTitle: "Preferences", action: #selector(openPreferences), keyEquivalent: ",")
+		self.statusbarMenu.addItem(NSMenuItem.separator())
+		self.statusbarMenu.addItem(withTitle: "Quit Expander",
+							action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+	}
+
+	func initData() {
+		userDefaults.register(defaults: [
+			"sortMethod": "snippetTrigger",
+			"showNotification": false,
+			"passiveMode": false,
+			"passiveExpandKey": "\\",
+			"dateformat": 0,
+			"longSnippetsDirectory": URL(fileURLWithPath: (NSHomeDirectory() + "/Documents/Expander/")).absoluteString
+			])
+		self.appData = AppData()
+	}
+	//
+	func sendNotification() {
+	   let content = UNMutableNotificationContent()
+	   content.title = "Expander is disabled"
+	   content.subtitle = "Press cmd+shift+e to renable Expander."
+	   content.sound = UNNotificationSound.default
+	   let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+	   let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+		UNUserNotificationCenter.current().add(request)
+	}
+	//
+	func postLoadIPdataNotification() {
+		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadipdata"), object: nil)
+	}
+	func loadIPdata() {
+		timer = DispatchSource.makeTimerSource()
+		timer?.schedule(deadline: DispatchTime.now(), repeating: DispatchTimeInterval.seconds(3600), leeway: DispatchTimeInterval.seconds(5))
+		timer?.setEventHandler(handler: postLoadIPdataNotification)
+		// start the timer
+		timer?.resume()
+	}
+}
+
+extension AppDelegate {
+	func getLongSnippet() -> [LongSnippetModel] {
+		let fileManager = FileManager.default
+		do {
+			guard let pathUrl = UserDefaults.standard.string(forKey: "longSnippetsDirectory") else {
+				return []
+			}
+			let files = try fileManager.contentsOfDirectory(atPath: (pathUrl))
+			return files.map {
+				file in LongSnippetModel(name: file.description)
+			}
+		} catch {
+			// error (probably no permission)
+			let alert = NSAlert.init()
+			alert.messageText = "Unexpected error occurs!"
+			alert.informativeText = "Please make sure the path of long snippets is exist and grant Expander the permission to access your disk."
+			alert.addButton(withTitle: "OK")
+			alert.runModal()
+			return []
+		}
+	}
+}
