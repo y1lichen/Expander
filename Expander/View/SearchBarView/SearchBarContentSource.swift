@@ -49,7 +49,8 @@ class SearchBarContentSource: DSFQuickActionBarSwiftUIContentSource {
 			return
 		}
 		self.selectedLongSnippet = longSnippet
-		print(longSnippet.name)
+		let userInfo = ["fileName": self.selectedLongSnippet!.name]
+		NotificationCenter.default.post(name: NSNotification.Name("getLongSnippet"), object: nil, userInfo: userInfo)
 	}
 	
 	func didCancel() {

@@ -50,6 +50,13 @@ struct appSettings {
             NotificationCenter.default.post(name: NSNotification.Name("passiveKeyChanged"), object: nil, userInfo: nil)
         }
     }
+	
+	var enableLongSnippets: Bool {
+		didSet {
+			userDefaults.setValue(enableLongSnippets, forKey: "enableLongSnippets")
+			NotificationCenter.default.post(name: NSNotification.Name("enableLongSnippetsChanged"), object: nil, userInfo: nil)
+		}
+	}
 
     init() {
 		showAlert = false
@@ -58,6 +65,7 @@ struct appSettings {
 		dateformat = userDefaults.integer(forKey: "dateformat")
 		isPassive = userDefaults.bool(forKey: "passiveMode")
         expandKey = userDefaults.string(forKey: "passiveExpandKey") ?? "\\"
+		enableLongSnippets = userDefaults.bool(forKey: "enableLongSnippets")
 		if (self.longSnippetsDirectory != defaultDirectory) {
 			urlSelectionType = 1
 		}
@@ -104,15 +112,14 @@ struct GeneralSettingView: View {
 	}
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 20) {
             //
             Button(action: reloadIP) {
                 Text("reload IP adress")
-			}.padding(.top, 10)
-            Spacer().frame(height: 20)
+			}
             // MARK: notification
             Toggle("Show notification when Expander is disabled", isOn: $settings.showNotification)
-            Spacer().frame(height: 20)
+			Toggle("Enable Long Snippets", isOn: $settings.enableLongSnippets)
 			Picker("Directory of long snippets", selection: $settings.urlSelectionType) {
 				if (settings.urlSelectionType == 0) {
 					Text("~/Documents/Expender/").tag(0)
@@ -125,6 +132,7 @@ struct GeneralSettingView: View {
 					Text("Other").tag(2)
 				}
 			}
+			.disabled(!(self.settings.enableLongSnippets))
 			.onChange(of: self.settings.urlSelectionType) { newValue in
 				if (newValue == 2) {
 					self.selectDirectory()
@@ -136,18 +144,15 @@ struct GeneralSettingView: View {
                 Text("yyyy-mm-dd").tag(0)
                 Text("mm-dd-yyyy").tag(1)
             }.frame(width: 200)
-            Spacer().frame(height: 20)
 			Toggle("Passive mode", isOn: $settings.isPassive)
-            if (settings.isPassive) {
-                Spacer().frame(height: 20)
-                Picker(selection: $settings.expandKey, label: Text("expanding key")) {
-                    Text("\\").tag("\\").frame(width: 75)
-                    Text(";").tag(";").frame(width: 75)
-                    Text(",").tag(",").frame(width: 75)
-                    Text(".").tag(".").frame(width: 75)
-                }.pickerStyle(RadioGroupPickerStyle())
-            }
-			Spacer()
+			Picker(selection: $settings.expandKey, label: Text("Expanding key")) {
+				Text("\\").tag("\\").frame(width: 75)
+				Text(";").tag(";").frame(width: 75)
+				Text(",").tag(",").frame(width: 75)
+				Text(".").tag(".").frame(width: 75)
+			}
+			.disabled(!(self.settings.isPassive))
+			.pickerStyle(RadioGroupPickerStyle())
 		}
 		.padding(20)
 		.alert(isPresented: $settings.showAlert) {

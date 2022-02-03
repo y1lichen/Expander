@@ -258,6 +258,7 @@ extension AppDelegate {
 			"passiveMode": false,
 			"passiveExpandKey": "\\",
 			"dateformat": 0,
+			"enableLongSnippets": false,
 			"longSnippetsDirectory": URL(fileURLWithPath: (NSHomeDirectory() + "/Documents/Expander/")).absoluteString
 			])
 		self.appData = AppData()

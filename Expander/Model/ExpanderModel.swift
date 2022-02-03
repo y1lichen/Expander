@@ -19,6 +19,7 @@ extension NSEvent {
 class ExpanderModel {
 	var text = ""
 	//
+	let longSnippetHandler = LongSnippetHandlerModel()
 	let appdelegate = NSApplication.shared.delegate as! AppDelegate
 	lazy var context = appdelegate.persistentContainer.viewContext
 	let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SnippetData")
@@ -35,6 +36,8 @@ class ExpanderModel {
 	//
 	var isPassive: Bool!
 	var expandKey: String!
+	var enableLongSnippets: Bool!
+	var longSnippetFileName: String?
 	// IP data
 	@ObservedObject var ipdata = IPAdress()
 	//
@@ -112,6 +115,9 @@ class ExpanderModel {
 	@objc func passivekeyDidChanged() {
 		self.expandKey = UserDefaults.standard.string(forKey: "passiveExpandKey")
 	}
+	@objc func enableLongSnippetsDidChanged() {
+		self.enableLongSnippets = UserDefaults.standard.bool(forKey: "enableLongSnippets")
+	}
 	//
 	@objc func reloadIPdata() {
 		self.ipdata.updateIP()
@@ -125,8 +131,11 @@ class ExpanderModel {
 		self.passivemodeDidChanged()
 		self.passivekeyDidChanged()
 		self.passiveModeHandler()
+		self.enableLongSnippetsDidChanged()
 		NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: self.context)
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadIPdata), name: NSNotification.Name(rawValue: "loadipdata"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(enableLongSnippetsDidChanged), name: NSNotification.Name(rawValue: "enableLongSnippetsChanged"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handlePasteLongSnippet(_:)), name: NSNotification.Name(rawValue: "getLongSnippet"), object: nil)
 		// MARK: - MAIN
 		//
 //		NSEvent.addGlobalMonitorForEvents(matching: .keyUp) { (event) in
@@ -140,8 +149,9 @@ class ExpanderModel {
 			if event.modifierFlags.contains([.control, .shift]) && keycode == 14 {
 				self.appdelegate.toggleExpander()
 				return
-			} else if (event.modifierFlags.contains([.control, .shift]) && keycode == 1) {
+			} else if (self.enableLongSnippets && event.modifierFlags.contains([.control, .shift]) && keycode == 1) {
 				self.appdelegate.toggleLongSnippetView()
+				self.text = ""
 			}
 			if self.appdelegate.isOn {
 				guard let character = event.characters else { return }
@@ -168,8 +178,9 @@ class ExpanderModel {
 			return event
 		}
 	}
-	/*
-	*/
+}
+
+extension ExpanderModel {
 	func checkMatch() {
 		let target = String(repeating: self.expandKey, count: 2)
 		if self.isPassive {
@@ -227,6 +238,12 @@ class ExpanderModel {
 		// MARK: - paste
 		pasteSnippet(inputContent: snippet.content)
 	}
+	
+	@objc func handlePasteLongSnippet(_ notifaction: Notification) {
+		if let fileName = notifaction.userInfo?["fileName"] as? String {
+			self.longSnippetHandler.handleEvent(fileName: fileName)
+		}
+	}
 
 	// simulating keypress
 	func pressDeleteKey() {
@@ -264,6 +281,3 @@ class ExpanderModel {
 		}
 	}
 }
-
-/*
-*/

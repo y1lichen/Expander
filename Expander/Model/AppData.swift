@@ -8,7 +8,6 @@
 import Foundation
 
 
-
 class AppData: ObservableObject {
 	let nc = NotificationCenter.default
 	@Published var preferencesView: Int = 0
