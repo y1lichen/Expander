@@ -23,6 +23,7 @@
 		D48A623326BFAD0200E4A419 /* ExpanderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623226BFAD0200E4A419 /* ExpanderModel.swift */; };
 		D48A623526BFAD2400E4A419 /* SnippetsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623426BFAD2400E4A419 /* SnippetsModel.swift */; };
 		D48A623726BFAD3C00E4A419 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A623626BFAD3C00E4A419 /* ToolBar.swift */; };
+		D49055FC27AD88ED00F0109C /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = D49055FB27AD88ED00F0109C /* LaunchAtLogin */; };
 		D4B0DE0C26FB52AD0026FDEC /* GetIPaddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0DE0B26FB52AD0026FDEC /* GetIPaddress.swift */; };
 		D4D8FB8326CE4CA80022F340 /* SnippetData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8126CE4CA80022F340 /* SnippetData+CoreDataClass.swift */; };
 		D4D8FB8426CE4CA80022F340 /* SnippetData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8FB8226CE4CA80022F340 /* SnippetData+CoreDataProperties.swift */; };
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D49055FC27AD88ED00F0109C /* LaunchAtLogin in Frameworks */,
 				D43CA30C279EAC1000C93BD5 /* DSFQuickActionBar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,6 +217,7 @@
 			name = Expander;
 			packageProductDependencies = (
 				D43CA30B279EAC1000C93BD5 /* DSFQuickActionBar */,
+				D49055FB27AD88ED00F0109C /* LaunchAtLogin */,
 			);
 			productName = Expander;
 			productReference = D48A621526BFAC1300E4A419 /* Expander.app */;
@@ -245,6 +248,7 @@
 			mainGroup = D48A620C26BFAC1300E4A419;
 			packageReferences = (
 				D43CA30A279EAC1000C93BD5 /* XCRemoteSwiftPackageReference "DSFQuickActionBar" */,
+				D49055FA27AD88ED00F0109C /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
 			);
 			productRefGroup = D48A621626BFAC1300E4A419 /* Products */;
 			projectDirPath = "";
@@ -510,6 +514,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		D49055FA27AD88ED00F0109C /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -517,6 +529,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D43CA30A279EAC1000C93BD5 /* XCRemoteSwiftPackageReference "DSFQuickActionBar" */;
 			productName = DSFQuickActionBar;
+		};
+		D49055FB27AD88ED00F0109C /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D49055FA27AD88ED00F0109C /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
+			productName = LaunchAtLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -54,10 +54,11 @@
 - [x] notification for toggling
 - [x] optional expand-key for passive mode
 
+#### Long Snippet with format
+Expander will read the text files in specific directory and paste it.
 ---
 ### Dependencies
 - [DSFQuickActionBar](https://github.com/dagronf/DSFQuickActionBar)
-
 ### More
 
 #### [some swift tricks used in this project](./swift-tricks.md)
