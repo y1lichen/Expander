@@ -18,7 +18,7 @@ struct SearchBarCellView: View {
 	}
 	
     var body: some View {
-		Text(removeFileExtension(name: longSnippet.name))
+		Text(removeFileExtension(name: longSnippet.path.lastPathComponent))
 			.font(.system(size: 25, weight: .bold))
 			.padding(5)
 	}

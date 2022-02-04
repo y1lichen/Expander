@@ -10,5 +10,5 @@ import DSFQuickActionBar
 
 struct LongSnippetModel {
 	let identifier = DSFQuickActionBar.ItemIdentifier()
-	let name: String
+	let path: URL
 }

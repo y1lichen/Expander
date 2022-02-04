@@ -240,8 +240,9 @@ extension ExpanderModel {
 	}
 	
 	@objc func handlePasteLongSnippet(_ notifaction: Notification) {
-		if let fileName = notifaction.userInfo?["fileName"] as? String {
-			self.longSnippetHandler.handleEvent(fileName: fileName)
+		if let path = notifaction.userInfo?["path"] {
+			let longSnippetContent = self.longSnippetHandler.getContentOfLongSnippet(path: path as! URL)
+			pasteSnippet(inputContent: longSnippetContent)
 		}
 	}
 

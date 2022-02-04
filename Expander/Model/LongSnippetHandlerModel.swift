@@ -10,14 +10,16 @@ import AppKit
 
 class LongSnippetHandlerModel {
 	var contenOfFile: String? = nil
-	var fileName: String? = nil
+	var pathOfLongSnippet: URL? = nil
 	
-	func handleEvent(fileName: String) {
-		self.fileName = fileName
+	func getContentOfLongSnippet(path: URL) -> String {
+		self.pathOfLongSnippet = path
 		readContent()
+		self.pathOfLongSnippet = nil
+		return self.contenOfFile ?? ""
 	}
 	
-	func showAlert() {
+	private func showAlert() {
 		let alert = NSAlert()
 		alert.messageText = "Error occured when accessing the directory of the snippets!"
 		alert.addButton(withTitle: "Cancel")
@@ -25,8 +27,11 @@ class LongSnippetHandlerModel {
 	}
 	
 	private func readContent() {
-		guard let directory = UserDefaults.standard.string(forKey: "longSnippetsDirectory") else {
-			return
+		do {
+			let data = try String(contentsOf: self.pathOfLongSnippet!, encoding: .utf8)
+			self.contenOfFile = data
+		} catch {
+			showAlert()
 		}
 	}
 }

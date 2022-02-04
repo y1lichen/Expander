@@ -24,10 +24,12 @@ class SearchBarContentSource: DSFQuickActionBarSwiftUIContentSource {
 
 	func identifiersForSearch(_ searchTerm: String) -> [DSFQuickActionBar.ItemIdentifier] {
 		if searchTerm.isEmpty {
-			return []
+			return allSnippets.map {
+				$0.identifier
+			}
 		}
 		return allSnippets.filter {
-			$0.name.localizedCaseInsensitiveContains(searchTerm)
+			$0.path.lastPathComponent.localizedCaseInsensitiveContains(searchTerm)
 		}.map {
 			$0.identifier
 		}
@@ -49,7 +51,7 @@ class SearchBarContentSource: DSFQuickActionBarSwiftUIContentSource {
 			return
 		}
 		self.selectedLongSnippet = longSnippet
-		let userInfo = ["fileName": self.selectedLongSnippet!.name]
+		let userInfo = ["path": self.selectedLongSnippet!.path]
 		NotificationCenter.default.post(name: NSNotification.Name("getLongSnippet"), object: nil, userInfo: userInfo)
 	}
 	

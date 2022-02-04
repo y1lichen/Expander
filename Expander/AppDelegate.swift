@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
 		self.initData()
 		self.createStatusBar()
-//		self.getuserPermission()
+		self.getuserPermission()
 		self.openPreferences()
 		self.model = ExpanderModel()
 		// load ip address
@@ -196,6 +196,7 @@ extension AppDelegate {
 		searchBar.present(placeholderText: "Snippet Search",
 						  width: 750,
 						  contentSource: SearchBarContentSource(allSnippets: longSnippets))
+		NSApplication.shared.activate(ignoringOtherApps: true)
 	}
 
 	//
@@ -273,10 +274,11 @@ extension AppDelegate {
 	   let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 		UNUserNotificationCenter.current().add(request)
 	}
-	//
+	
 	func postLoadIPdataNotification() {
 		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadipdata"), object: nil)
 	}
+	
 	func loadIPdata() {
 		timer = DispatchSource.makeTimerSource()
 		timer?.schedule(deadline: DispatchTime.now(), repeating: DispatchTimeInterval.seconds(3600), leeway: DispatchTimeInterval.seconds(5))
@@ -293,9 +295,9 @@ extension AppDelegate {
 			guard let pathUrl = UserDefaults.standard.string(forKey: "longSnippetsDirectory") else {
 				return []
 			}
-			let files = try fileManager.contentsOfDirectory(atPath: (pathUrl)) as [String]
+			let files = try fileManager.contentsOfDirectory(at: URL(fileURLWithPath: pathUrl), includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
 			return files.map {
-				file in LongSnippetModel(name: file)
+				file in LongSnippetModel(path: file)
 			}
 		} catch {
 			// error (probably no permission)
@@ -308,3 +310,6 @@ extension AppDelegate {
 		}
 	}
 }
+
+/*
+*/
