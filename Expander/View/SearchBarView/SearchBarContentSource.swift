@@ -57,5 +57,10 @@ class SearchBarContentSource: DSFQuickActionBarSwiftUIContentSource {
 	
 	func didCancel() {
 		self.selectedLongSnippet = nil
+		appDelegate.originalActiveApp?.activate(options: .activateAllWindows)
 	}
 }
+
+/*
+
+ */

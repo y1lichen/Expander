@@ -14,6 +14,8 @@ import DSFQuickActionBar
 class AppDelegate: NSObject, NSApplicationDelegate {
 	var appData: AppData!
 	//
+	var originalActiveApp: NSRunningApplication?
+	//
 	var isOn: Bool = true
 	//
 	// status bar
@@ -177,8 +179,8 @@ extension AppDelegate {
 		NSToolbar.prefToolBar.delegate = self
 		prefWindow.toolbar = .prefToolBar
 		prefWindow.contentView = NSHostingView(rootView: contentView)
-		NSApplication.shared.activate(ignoringOtherApps: true)
 		prefWindow.orderFrontRegardless()
+		NSApplication.shared.activate(ignoringOtherApps: true)
 		prefWindow.isReleasedWhenClosed = false
 	}
 
@@ -194,8 +196,10 @@ extension AppDelegate {
 		let longSnippets = getLongSnippet()
 		let searchBar = DSFQuickActionBar.SwiftUI<SearchBarCellView>()
 		searchBar.present(placeholderText: "Snippet Search",
-						  width: 750,
 						  contentSource: SearchBarContentSource(allSnippets: longSnippets))
+		originalActiveApp = NSWorkspace.shared.runningApplications.first(where: {
+			$0.isActive
+		})
 		NSApplication.shared.activate(ignoringOtherApps: true)
 	}
 
