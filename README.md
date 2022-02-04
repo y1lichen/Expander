@@ -55,7 +55,14 @@
 - [x] optional expand-key for passive mode
 
 #### Long Snippet with format
+
 Expander will read the text files in specific directory and paste it.
+![searchbar](./searchbar.png)
+![folder](./long-snippet.png)
+
+The name in the quick-search bar will be the file name of the files in
+the directory stores the snippets.
+
 ---
 ### Dependencies
 - [DSFQuickActionBar](https://github.com/dagronf/DSFQuickActionBar)

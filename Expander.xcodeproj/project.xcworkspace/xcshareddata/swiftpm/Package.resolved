@@ -9,15 +9,6 @@
           "revision": "41ee1e2e7211685424777f79ae7db8aaacfa9b74",
           "version": "2.1.0"
         }
-      },
-      {
-        "package": "LaunchAtLogin",
-        "repositoryURL": "https://github.com/sindresorhus/LaunchAtLogin",
-        "state": {
-          "branch": "main",
-          "revision": "e8171b3e38a2816f579f58f3dac1522aa39efe41",
-          "version": null
-        }
       }
     ]
   },
