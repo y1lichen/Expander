@@ -1,4 +1,6 @@
-## Expander - simple snippet application for macos 10.15+
+## Expander - simple snippet application for macos 11.3+
+
+(Expander v1.3 is compatible for macos 10.15 but contains serveral bugs.)
 
 ---
 
