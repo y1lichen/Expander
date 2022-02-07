@@ -9,6 +9,14 @@ import SwiftUI
 
 struct appSettings {
 	
+	private func createDefultLongSnippetDirectory() {
+		do {
+			try FileManager.default.createDirectory(atPath: NSHomeDirectory() + "/Documents/Expander/", withIntermediateDirectories: false, attributes: nil)
+		} catch {
+//			print(error)
+		}
+	}
+	
 	let defaultDirectory: String = NSHomeDirectory() + "/Documents/Expander/"
 	
 	mutating func resetLongSnippetsDirectory() {
@@ -17,7 +25,13 @@ struct appSettings {
 	let userDefaults = UserDefaults.standard
 	var showAlert: Bool
 	// 0 => default, 1 => custom
-	var urlSelectionType: Int = 0
+	var urlSelectionType: Int = 0 {
+		didSet {
+			if urlSelectionType == 0 {
+				createDefultLongSnippetDirectory()
+			}
+		}
+	}
 	var longSnippetsDirectory: String {
 		didSet {
 			userDefaults.setValue(longSnippetsDirectory, forKey: "longSnippetsDirectory")

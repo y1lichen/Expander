@@ -27,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	var timer: DispatchSourceTimer?
 	
 	let userDefaults = UserDefaults.standard
+	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
@@ -34,6 +35,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		self.createStatusBar()
 		self.getuserPermission()
 		self.openPreferences()
+		self.createDefultLongSnippetDirectory()
 		self.model = ExpanderModel()
 		// load ip address
 		self.loadIPdata()
@@ -293,6 +295,15 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
+	
+	func createDefultLongSnippetDirectory() {
+		do {
+			try FileManager.default.createDirectory(atPath: NSHomeDirectory() + "/Documents/Expander/", withIntermediateDirectories: false, attributes: nil)
+		} catch {
+//			print(error)
+		}
+	}
+	
 	func getLongSnippet() -> [LongSnippetModel] {
 		let fileManager = FileManager.default
 		do {
