@@ -59,6 +59,7 @@
 #### Long Snippet with format
 
 Expander will read the text files in specific directory and paste it.
+
 ![long snippet demo](./long-snippet.gif)
 ![searchbar](./searchbar.png)
 ![folder](./long-snippet.png)
