@@ -32,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
 		// Add `@Environment(\.managedObjectContext)` in the views that will need the context.
 		self.initData()
-		self.createStatusBar()
+		self.createStatusBar(enableLongSnippetToggle: UserDefaults.standard.bool(forKey: "enableLongSnippets"))
 		self.getuserPermission()
 		self.openPreferences()
 		self.createDefultLongSnippetDirectory()
@@ -232,7 +232,7 @@ extension AppDelegate {
 	}
 
 	//
-	func createStatusBar() {
+	func createStatusBar(enableLongSnippetToggle: Bool) {
 		self.statusbarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 		self.statusbarMenu = NSMenu()
 		self.setStatusBarIcon()
@@ -250,6 +250,7 @@ extension AppDelegate {
 		longSnippetToggle.action = #selector(toggleLongSnippetView)
 		longSnippetToggle.keyEquivalentModifierMask = [.control, .shift]
 		longSnippetToggle.keyEquivalent = "s"
+		longSnippetToggle.isHidden = !enableLongSnippetToggle
 		self.statusbarMenu.addItem(longSnippetToggle)
 		//
 		self.statusbarMenu.addItem(withTitle: "Preferences", action: #selector(openPreferences), keyEquivalent: ",")
@@ -266,7 +267,7 @@ extension AppDelegate {
 			"passiveExpandKey": "\\",
 			"dateformat": 0,
 			"enableLongSnippets": false,
-			"longSnippetsDirectory": URL(fileURLWithPath: (NSHomeDirectory() + "/Documents/Expander/")).absoluteString
+			"longSnippetsDirectory": (NSHomeDirectory() + "/Documents/Expander/")
 			])
 		self.appData = AppData()
 	}

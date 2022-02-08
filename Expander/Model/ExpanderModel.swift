@@ -117,7 +117,8 @@ class ExpanderModel {
 
     @objc func enableLongSnippetsDidChanged() {
         enableLongSnippets = UserDefaults.standard.bool(forKey: "enableLongSnippets")
-    }
+		appdelegate.createStatusBar(enableLongSnippetToggle: enableLongSnippets)
+	}
 
     //
     @objc func reloadIPdata() {
@@ -148,7 +149,7 @@ class ExpanderModel {
             if event.modifierFlags.contains([.control, .shift]) && keycode == 14 {
                 self.appdelegate.toggleExpander()
                 return
-            } else if event.modifierFlags.contains([.control, .shift]) && keycode == 1 {
+			} else if event.modifierFlags.contains([.control, .shift]) && keycode == 1 && self.enableLongSnippets {
                 self.appdelegate.toggleLongSnippetView()
                 self.text = ""
                 return

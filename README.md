@@ -8,11 +8,11 @@
 
 #### normal mode
 
-![normal mode showcase](./normal.gif)
+![normal mode showcase](./normal-mode.gif)
 
 #### passive mode
 
-## ![passive mode showcase](./passive.gif)
+## ![passive mode showcase](./passive-mode.gif)
 
 #### extra - emoji snippets
 > just type \cool (normal mode) and you will get 😎
@@ -59,6 +59,7 @@
 #### Long Snippet with format
 
 Expander will read the text files in specific directory and paste it.
+![long snippet demo](./long-snippet.gif)
 ![searchbar](./searchbar.png)
 ![folder](./long-snippet.png)
 
